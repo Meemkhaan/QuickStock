@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor-Specific Medicine Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .action-buttons button {
+            margin-right: 10px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 8px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .vendor-selection {
+            margin-bottom: 20px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <h1>Order Medicines</h1>
+
+    <!-- Vendor Selection -->
+    <div class="vendor-selection">
+        <label for="vendorSelect">Select Vendor:</label>
+        <select id="vendorSelect" onchange="loadMedicines()">
+            <option value="">-- Select Vendor --</option>
+        </select>
+    </div>
+
+    <!-- Search Box for Medicines (Initially Hidden) -->
+    <div class="search-container" id="searchContainer" style="display: none;">
+        <label for="medicineSearch">Search Medicines:</label>
+        <input type="text" id="medicineSearch" oninput="searchMedicines()" placeholder="Search for a medicine">
+    </div>
+
+    <!-- Medicine List -->
+    <div>
+        <h2>Available Medicines</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="medicineTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Selected Medicines -->
+    <div>
+        <h2>Selected Medicines</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="selectedMedicinesTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button onclick="previewOrder()">Preview Order</button>
+        <button onclick="sendWhatsApp()">Send WhatsApp</button>
+        <button onclick="clearOrder()">Clear Order</button>
+        <button onclick="printPreview()">Print</button>
+        <button onclick="generatePDF()">Generate PDF</button>
+    </div>
+
+    <script>
+        let vendors = [];
+        let currentVendor = null;
+        let selectedMedicines = [];
+        let filteredMedicines = [];  // Store filtered medicines for search
+        let previewWindow = null;
+
+        // Load vendors and populate the dropdown
+        function loadVendors() {
+            fetch('vendors.json')
+                .then(response => response.json())
+                .then(data => {
+                    vendors = data;
+                    const vendorSelect = document.getElementById('vendorSelect');
+                    data.forEach(vendor => {
+                        const option = document.createElement('option');
+                        option.value = vendor.id;
+                        option.textContent = vendor.name;
+                        vendorSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading vendors:', error));
+        }
+
+        // Load medicines for the selected vendor
+        function loadMedicines() {
+            const vendorId = document.getElementById('vendorSelect').value;
+            const medicineTable = document.getElementById('medicineTable');
+            medicineTable.innerHTML = ''; // Clear previous list
+            selectedMedicines = []; // Reset selection
+            filteredMedicines = []; // Reset filtered medicines
+
+            if (!vendorId) return;
+
+            currentVendor = vendors.find(vendor => vendor.id == vendorId);
+            
+            // Show search container when a vendor is selected
+            document.getElementById('searchContainer').style.display = 'block';
+
+            filteredMedicines = [...currentVendor.medicines]; // Initialize filtered list with all medicines
+            renderMedicines();
+        }
+
+        // Render filtered medicine list
+        function renderMedicines() {
+            const medicineTable = document.getElementById('medicineTable');
+            medicineTable.innerHTML = ''; // Clear current table
+
+            filteredMedicines.forEach((medicine, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${medicine.name}</td>
+                    <td>
+                        <input type="number" min="1" id="qty-${index}" placeholder="Quantity">
+                    </td>
+                    <td>
+                        <button onclick="addMedicine(${index})">Add</button>
+                    </td>
+                `;
+                medicineTable.appendChild(row);
+            });
+        }
+
+        // Add medicine to the selected list
+        function addMedicine(index) {
+            const qtyInput = document.getElementById(`qty-${index}`);
+            const quantity = parseInt(qtyInput.value, 10);
+
+            if (!quantity || quantity < 1) {
+                alert('Please enter a valid quantity.');
+                return;
+            }
+
+            const medicine = filteredMedicines[index];
+            const existingMedicine = selectedMedicines.find(med => med.id === medicine.id);
+
+            if (existingMedicine) {
+                // If the medicine already exists, update its quantity
+                existingMedicine.quantity += quantity;
+            } else {
+                // Add new medicine entry
+                selectedMedicines.push({ ...medicine, quantity });
+            }
+
+            renderSelectedMedicines();
+            qtyInput.value = ''; // Clear input
+        }
+
+        // Render selected medicines
+        function renderSelectedMedicines() {
+            const selectedTable = document.getElementById('selectedMedicinesTable');
+            selectedTable.innerHTML = '';
+            selectedMedicines.forEach((medicine, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${medicine.name}</td>
+                    <td>${medicine.quantity}</td>
+                    <td>
+                        <button onclick="removeMedicine(${index})">Remove</button>
+                    </td>
+                `;
+                selectedTable.appendChild(row);
+            });
+        }
+
+        // Remove medicine from selected list
+        function removeMedicine(index) {
+            selectedMedicines.splice(index, 1);
+            renderSelectedMedicines();
+        }
+
+        // Preview order in popup window
+        function previewOrder() {
+            if (!selectedMedicines.length) {
+                alert('No medicines selected.');
+                return;
+            }
+
+            if (previewWindow) {
+                previewWindow.close(); // Close previous preview window if any
+            }
+
+            previewWindow = window.open('', '_blank');
+            let orderHTML = `<h1>Order Preview</h1><p><strong>Vendor:</strong> ${currentVendor.name}</p>`;
+            orderHTML += `<table border="1"><thead><tr><th>Medicine</th><th>Quantity</th></tr></thead><tbody>`;
+            selectedMedicines.forEach(med => {
+                orderHTML += `<tr><td>${med.name}</td><td>${med.quantity}</td></tr>`;
+            });
+            orderHTML += '</tbody></table>';
+            previewWindow.document.write(orderHTML);
+            previewWindow.document.close();
+        }
+
+        // Print the order preview
+        function printPreview() {
+            if (!previewWindow) {
+                alert('Preview the order first.');
+                return;
+            }
+            previewWindow.print();
+        }
+
+        // Generate PDF for the order
+        function generatePDF() {
+            if (!selectedMedicines.length) {
+                alert('No medicines selected.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text(`Order for Vendor: ${currentVendor.name}`, 10, 10);
+            doc.autoTable({
+                head: [['Medicine', 'Quantity']],
+                body: selectedMedicines.map(med => [med.name, med.quantity]),
+            });
+
+            doc.save(`order_${currentVendor.name}.pdf`);
+        }
+
+        // Send order via WhatsApp
+        function sendWhatsApp() {
+            if (!selectedMedicines.length) {
+                alert('No medicines selected.');
+                return;
+            }
+
+            const message = selectedMedicines
+                .map(med => `${med.name} - Qty: ${med.quantity}`)
+                .join('\n');
+            const whatsappURL = `https://wa.me/${currentVendor.whatsapp}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        // Clear the current order
+        function clearOrder() {
+            selectedMedicines = [];
+            currentVendor = null;
+            document.getElementById('vendorSelect').value = '';
+            document.getElementById('medicineTable').innerHTML = '';
+            document.getElementById('selectedMedicinesTable').innerHTML = '';
+            document.getElementById('searchContainer').style.display = 'none'; // Hide search box
+        }
+
+        // Search for medicines by name
+        function searchMedicines() {
+            const searchTerm = document.getElementById('medicineSearch').value.toLowerCase();
+            filteredMedicines = currentVendor.medicines.filter(medicine =>
+                medicine.name.toLowerCase().includes(searchTerm)
+            );
+            renderMedicines();
+        }
+
+        // Load vendor data when the page loads
+        window.onload = loadVendors;
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "Vendor A",
+        "whatsapp": "+923422251896",
+        "medicines": [
+            { "id": 101, "name": "Paracetamol" },
+            { "id": 102, "name": "Ibuprofen" }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Vendor B",
+        "whatsapp": "+923142219865",
+        "medicines": [
+            { "id": 201, "name": "Amoxicillin" },
+            { "id": 202, "name": "Ciprofloxacin" }
+        ]
+    }
+]
+
+
