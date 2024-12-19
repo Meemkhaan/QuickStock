@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Medicines</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .actions {
+            margin-top: 20px;
+        }
+        .actions button {
+            margin-right: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Order Medicines</h1>
+    <input
+        type="text"
+        id="searchBar"
+        class="search-bar"
+        placeholder="Search for medicines..."
+        onkeyup="filterMedicines()"
+    >
+    <form id="orderForm">
+        <table id="medicineTable">
+            <thead>
+                <tr>
+                    <th>Medicine Name</th>
+                    <th>Enter Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamic rows will be populated here -->
+            </tbody>
+        </table>
+        <div class="actions">
+            <button type="button" onclick="previewOrder()">Preview</button>
+            <button type="button" onclick="sendWhatsApp()">Send WhatsApp</button>
+            <button type="button" onclick="window.print()">Print</button>
+            <button type="button" onclick="generatePDF()">Generate PDF</button>
+        </div>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        let medicines = [];
+
+        // Load medicines dynamically from a JSON file
+        fetch('medicines.json')
+            .then(response => response.json())
+            .then(data => {
+                medicines = data;
+                populateTable(medicines);
+            })
+            .catch(error => console.error('Error loading medicines:', error));
+
+        // Populate the medicine table dynamically
+        function populateTable(medicineList) {
+            const tableBody = document.querySelector('#medicineTable tbody');
+            tableBody.innerHTML = ''; // Clear previous rows
+            medicineList.forEach(medicine => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${medicine.name}</td>
+                    <td><input type="number" name="${medicine.name}" min="0" placeholder="0"></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Filter medicines based on search input
+        function filterMedicines() {
+            const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+            const filteredMedicines = medicines.filter(medicine =>
+                medicine.name.toLowerCase().includes(searchTerm)
+            );
+            populateTable(filteredMedicines);
+        }
+
+        // Preview the order
+        function previewOrder() {
+            const formData = new FormData(document.getElementById('orderForm'));
+            let preview = 'Order Preview:\n\n';
+            formData.forEach((value, key) => {
+                if (value) preview += `${key}: ${value}\n`;
+            });
+            alert(preview || 'No medicines selected.');
+        }
+
+        // Send order via WhatsApp
+        function sendWhatsApp() {
+            const formData = new FormData(document.getElementById('orderForm'));
+            let message = 'Medicine Order:\n';
+            formData.forEach((value, key) => {
+                if (value) message += `- ${key}: ${value}\n`;
+            });
+            if (!message.trim()) {
+                alert('No medicines selected.');
+                return;
+            }
+            const phone = '923142219865'; // Replace with vendor's number
+            const url = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Generate a PDF of the order
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let y = 10;
+            doc.text('Medicine Order', 10, y);
+            y += 10;
+            const formData = new FormData(document.getElementById('orderForm'));
+            formData.forEach((value, key) => {
+                if (value) {
+                    doc.text(`${key}: ${value}`, 10, y);
+                    y += 10;
+                }
+            });
+            doc.save('medicine_order.pdf');
+        }
+    </script>
+</body>
+</html>
