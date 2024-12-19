@@ -23,6 +23,16 @@
         }
         .action-buttons button {
             margin-right: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .action-buttons button:hover {
+            background-color: #45a049;
         }
         .search-container {
             margin-bottom: 20px;
@@ -34,6 +44,22 @@
         }
         .vendor-selection {
             margin-bottom: 20px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .iPhone-btn {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .iPhone-btn:hover {
+            background-color: #0056b3;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -89,9 +115,8 @@
     <!-- Action Buttons -->
     <div class="action-buttons">
         <button onclick="previewOrder()">Preview Order</button>
+        <button class="iPhone-btn" onclick="printOrder()">Print (iPhone Style)</button>
         <button onclick="sendWhatsApp()">Send WhatsApp</button>
-        <button onclick="clearOrder()">Clear Order</button>
-        <button onclick="printPreview()">Print</button>
         <button onclick="generatePDF()">Generate PDF</button>
     </div>
 
@@ -100,8 +125,9 @@
         let currentVendor = null;
         let selectedMedicines = [];
         let filteredMedicines = [];  // Store filtered medicines for search
-        let previewWindow = null;
 
+
+        
         // Load vendors and populate the dropdown
         function loadVendors() {
             fetch('vendors.json')
@@ -206,77 +232,100 @@
             renderSelectedMedicines();
         }
 
-        // Preview order in popup window
-        function previewOrder() {
-            if (!selectedMedicines.length) {
-                alert('No medicines selected.');
-                return;
-            }
+// Get the current date in a readable format
+function getCurrentDate() {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = today.getFullYear();
+    return `${day}-${month}-${year}`;
+}
 
-            if (previewWindow) {
-                previewWindow.close(); // Close previous preview window if any
-            }
+// Preview the order (show a modal or a simple preview)
+function previewOrder() {
+    if (!selectedMedicines.length) {
+        alert('No medicines selected.');
+        return;
+    }
 
-            previewWindow = window.open('', '_blank');
-            let orderHTML = `<h1>Order Preview</h1><p><strong>Vendor:</strong> ${currentVendor.name}</p>`;
-            orderHTML += `<table border="1"><thead><tr><th>Medicine</th><th>Quantity</th></tr></thead><tbody>`;
-            selectedMedicines.forEach(med => {
-                orderHTML += `<tr><td>${med.name}</td><td>${med.quantity}</td></tr>`;
-            });
-            orderHTML += '</tbody></table>';
-            previewWindow.document.write(orderHTML);
-            previewWindow.document.close();
-        }
+    const currentDate = getCurrentDate();
+    let previewContent = `<h1>Preview Order for Vendor: ${currentVendor.name}</h1>`;
+    previewContent += `<p>Date: ${currentDate}</p>`;
+    previewContent += `<table border="1"><thead><tr><th>Medicine</th><th>Quantity</th></tr></thead><tbody>`;
 
-        // Print the order preview
-        function printPreview() {
-            if (!previewWindow) {
-                alert('Preview the order first.');
-                return;
-            }
-            previewWindow.print();
-        }
+    selectedMedicines.forEach(med => {
+        previewContent += `<tr><td>${med.name}</td><td>${med.quantity}</td></tr>`;
+    });
 
-        // Generate PDF for the order
-        function generatePDF() {
-            if (!selectedMedicines.length) {
-                alert('No medicines selected.');
-                return;
-            }
+    previewContent += '</tbody></table>';
 
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.text(`Order for Vendor: ${currentVendor.name}`, 10, 10);
-            doc.autoTable({
-                head: [['Medicine', 'Quantity']],
-                body: selectedMedicines.map(med => [med.name, med.quantity]),
-            });
+    const previewWindow = window.open('', '_blank');
+    previewWindow.document.write(previewContent);
+    previewWindow.document.close();
+}
 
-            doc.save(`order_${currentVendor.name}.pdf`);
-        }
+// Print the order (directly, no preview)
+function printOrder() {
+    if (!selectedMedicines.length) {
+        alert('No medicines selected.');
+        return;
+    }
 
-        // Send order via WhatsApp
-        function sendWhatsApp() {
-            if (!selectedMedicines.length) {
-                alert('No medicines selected.');
-                return;
-            }
+    const currentDate = getCurrentDate();
+    const printWindow = window.open('', '_blank');
+    let orderHTML = `<h1>Order for Vendor: ${currentVendor.name}</h1>`;
+    orderHTML += `<p>Date: ${currentDate}</p>`;
+    orderHTML += `<table border="1"><thead><tr><th>Medicine</th><th>Quantity</th></tr></thead><tbody>`;
+    selectedMedicines.forEach(med => {
+        orderHTML += `<tr><td>${med.name}</td><td>${med.quantity}</td></tr>`;
+    });
+    orderHTML += '</tbody></table>';
+    printWindow.document.write(orderHTML);
+    printWindow.document.close();
 
-            const message = selectedMedicines
-                .map(med => `${med.name} - Qty: ${med.quantity}`)
-                .join('%0A');
+    // Ensure the content is fully loaded before printing
+    printWindow.onload = function () {
+        printWindow.print();
+    };
+}
 
-            const vendorPhone = currentVendor.whatsapp;
-            window.open(`https://wa.me/${vendorPhone}?text=Order%20Details:%0A${message}`, '_blank');
-        }
 
-        // Clear the order
-        function clearOrder() {
-            selectedMedicines = [];
-            renderSelectedMedicines();
-        }
+// Generate PDF for the order
+function generatePDF() {
+    if (!selectedMedicines.length) {
+        alert('No medicines selected.');
+        return;
+    }
 
-        // Search medicines based on user input
+    const currentDate = getCurrentDate();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.text(`Order for Vendor: ${currentVendor.name}`, 10, 10);
+    doc.text(`Date: ${currentDate}`, 10, 20);
+    doc.autoTable({
+        head: [['Medicine', 'Quantity']],
+        body: selectedMedicines.map(med => [med.name, med.quantity]),
+    });
+
+    doc.save(`order_${currentVendor.name}_${currentDate}.pdf`);
+}
+
+
+// Send order via WhatsApp
+function sendWhatsApp() {
+    if (!selectedMedicines.length) {
+        alert('No medicines selected.');
+        return;
+    }
+
+    const orderDetails = selectedMedicines.map(med => `${med.name} - Qty: ${med.quantity}`).join('\n');
+    const message = `Order Details:\nDate: ${getCurrentDate()}\n\n${orderDetails}`;
+    const phoneNumber = currentVendor.whatsapp; // WhatsApp number associated with vendor
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+}
+
+        // Search medicines by name
         function searchMedicines() {
             const searchTerm = document.getElementById('medicineSearch').value.toLowerCase();
             filteredMedicines = currentVendor.medicines.filter(medicine =>
