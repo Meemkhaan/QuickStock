@@ -37,6 +37,7 @@
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.19/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
     <h1>Order Medicines</h1>
@@ -263,22 +264,19 @@
 
             const message = selectedMedicines
                 .map(med => `${med.name} - Qty: ${med.quantity}`)
-                .join('\n');
-            const whatsappURL = `https://wa.me/${currentVendor.whatsapp}?text=${encodeURIComponent(message)}`;
-            window.open(whatsappURL, '_blank');
+                .join('%0A');
+
+            const vendorPhone = currentVendor.whatsapp;
+            window.open(`https://wa.me/${vendorPhone}?text=Order%20Details:%0A${message}`, '_blank');
         }
 
-        // Clear the current order
+        // Clear the order
         function clearOrder() {
             selectedMedicines = [];
-            currentVendor = null;
-            document.getElementById('vendorSelect').value = '';
-            document.getElementById('medicineTable').innerHTML = '';
-            document.getElementById('selectedMedicinesTable').innerHTML = '';
-            document.getElementById('searchContainer').style.display = 'none'; // Hide search box
+            renderSelectedMedicines();
         }
 
-        // Search for medicines by name
+        // Search medicines based on user input
         function searchMedicines() {
             const searchTerm = document.getElementById('medicineSearch').value.toLowerCase();
             filteredMedicines = currentVendor.medicines.filter(medicine =>
@@ -287,7 +285,7 @@
             renderMedicines();
         }
 
-        // Load vendor data when the page loads
+        // Load vendors when the page loads
         window.onload = loadVendors;
     </script>
 </body>
