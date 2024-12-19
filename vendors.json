@@ -10,7 +10,7 @@
     },
     {
         "id": 2,
-        "name": "Vendor B",
+        "name": "Vendor Bb",
         "whatsapp": "+923142219865",
         "medicines": [
             { "id": 201, "name": "Amoxicillin" },
