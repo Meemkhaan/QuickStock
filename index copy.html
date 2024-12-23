@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor-Specific Medicine Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .action-buttons button {
+            margin-right: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .action-buttons button:hover {
+            background-color: #45a049;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 8px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .vendor-selection {
+            margin-bottom: 20px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .iPhone-btn {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .iPhone-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.19/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <h1>Order Medicines</h1>
+
+    <!-- Vendor Selection -->
+    <div class="vendor-selection">
+        <label for="vendorSelect">Select Vendor:</label>
+        <select id="vendorSelect" onchange="loadMedicines()">
+            <option value="">-- Select Vendor --</option>
+        </select>
+    </div>
+
+    <!-- Search Box for Medicines (Initially Hidden) -->
+    <div class="search-container" id="searchContainer" style="display: none;">
+        <label for="medicineSearch">Search Medicines:</label>
+        <input type="text" id="medicineSearch" oninput="searchMedicines()" placeholder="Search for a medicine">
+    </div>
+
+    <!-- Medicine List -->
+    <div>
+        <h2>Available Medicines</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="medicineTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Selected Medicines -->
+    <div>
+        <h2>Selected Medicines</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="selectedMedicinesTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button onclick="previewOrder()">Preview Order</button>
+        <button class="iPhone-btn" onclick="printOrder()">Print (iPhone Style)</button>
+        <button onclick="sendWhatsApp()">Send WhatsApp</button>
+        <button onclick="generatePDF()">Generate PDF</button>
+    </div>
+
+    <script>
+        let vendors = [];
+        let currentVendor = null;
+        let selectedMedicines = [];
+        let filteredMedicines = [];  // Store filtered medicines for search
+
+
+        
+        // Load vendors and populate the dropdown
+        function loadVendors() {
+            fetch('vendors.json')
+                .then(response => response.json())
+                .then(data => {
+                    vendors = data;
+                    const vendorSelect = document.getElementById('vendorSelect');
+                    data.forEach(vendor => {
+                        const option = document.createElement('option');
+                        option.value = vendor.id;
+                        option.textContent = vendor.name;
+                        vendorSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading vendors:', error));
+        }
+
+        // Load medicines for the selected vendor
+        function loadMedicines() {
+            const vendorId = document.getElementById('vendorSelect').value;
+            const medicineTable = document.getElementById('medicineTable');
+            medicineTable.innerHTML = ''; // Clear previous list
+            selectedMedicines = []; // Reset selection
+            filteredMedicines = []; // Reset filtered medicines
+
+            if (!vendorId) return;
+
+            currentVendor = vendors.find(vendor => vendor.id == vendorId);
+            
+            // Show search container when a vendor is selected
+            document.getElementById('searchContainer').style.display = 'block';
+
+            filteredMedicines = [...currentVendor.medicines]; // Initialize filtered list with all medicines
+            renderMedicines();
+        }
+
+        // Render filtered medicine list
+        function renderMedicines() {
+            const medicineTable = document.getElementById('medicineTable');
+            medicineTable.innerHTML = ''; // Clear current table
+
+            filteredMedicines.forEach((medicine, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${medicine.name}</td>
+                    <td>
+                        <input type="number" min="1" id="qty-${index}" placeholder="Quantity">
+                    </td>
+                    <td>
+                        <button onclick="addMedicine(${index})">Add</button>
+                    </td>
+                `;
+                medicineTable.appendChild(row);
+            });
+        }
+
+        // Add medicine to the selected list
+        function addMedicine(index) {
+            const qtyInput = document.getElementById(`qty-${index}`);
+            const quantity = parseInt(qtyInput.value, 10);
+
+            if (!quantity || quantity < 1) {
+                alert('Please enter a valid quantity.');
+                return;
+            }
+
+            const medicine = filteredMedicines[index];
+            const existingMedicine = selectedMedicines.find(med => med.id === medicine.id);
+
+            if (existingMedicine) {
+                // If the medicine already exists, update its quantity
+                existingMedicine.quantity += quantity;
+            } else {
+                // Add new medicine entry
+                selectedMedicines.push({ ...medicine, quantity });
+            }
+
+            renderSelectedMedicines();
+            qtyInput.value = ''; // Clear input
+        }
+
+        // Render selected medicines
+        function renderSelectedMedicines() {
+            const selectedTable = document.getElementById('selectedMedicinesTable');
+            selectedTable.innerHTML = '';
+            selectedMedicines.forEach((medicine, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${medicine.name}</td>
+                    <td>${medicine.quantity}</td>
+                    <td>
+                        <button onclick="removeMedicine(${index})">Remove</button>
+                    </td>
+                `;
+                selectedTable.appendChild(row);
+            });
+        }
+
+        // Remove medicine from selected list
+        function removeMedicine(index) {
+            selectedMedicines.splice(index, 1);
+            renderSelectedMedicines();
+        }
+
+// Get the current date in a readable format
+function getCurrentDate() {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = today.getFullYear();
+    return `${day}-${month}-${year}`;
+}
+
+// Preview the order (show a modal or a simple preview)
+function previewOrder() {
+    if (!selectedMedicines.length) {
+        alert('No medicines selected.');
+        return;
+    }
+
+    const currentDate = getCurrentDate();
+    let previewContent = `<h1>Preview Order for Vendor: ${currentVendor.name}</h1>`;
+    previewContent += `<p>Date: ${currentDate}</p>`;
+    previewContent += `<table border="1"><thead><tr><th>Medicine</th><th>Quantity</th></tr></thead><tbody>`;
+
+    selectedMedicines.forEach(med => {
+        previewContent += `<tr><td>${med.name}</td><td>${med.quantity}</td></tr>`;
+    });
+
+    previewContent += '</tbody></table>';
+
+    const previewWindow = window.open('', '_blank');
+    previewWindow.document.write(previewContent);
+    previewWindow.document.close();
+}
+
+// Print the order (directly, no preview)
+function printOrder() {
+    if (!selectedMedicines.length) {
+        alert('No medicines selected.');
+        return;
+    }
+
+    const currentDate = getCurrentDate();
+    const printWindow = window.open('', '_blank');
+    let orderHTML = `<h1>Order for Vendor: ${currentVendor.name}</h1>`;
+    orderHTML += `<p>Date: ${currentDate}</p>`;
+    orderHTML += `<table border="1"><thead><tr><th>Medicine</th><th>Quantity</th></tr></thead><tbody>`;
+    selectedMedicines.forEach(med => {
+        orderHTML += `<tr><td>${med.name}</td><td>${med.quantity}</td></tr>`;
+    });
+    orderHTML += '</tbody></table>';
+    printWindow.document.write(orderHTML);
+    printWindow.document.close();
+
+    // Ensure the content is fully loaded before printing
+    printWindow.onload = function () {
+        printWindow.print();
+    };
+}
+
+
+// Generate PDF for the order
+function generatePDF() {
+    if (!selectedMedicines.length) {
+        alert('No medicines selected.');
+        return;
+    }
+
+    const currentDate = getCurrentDate();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.text(`Order for Vendor: ${currentVendor.name}`, 10, 10);
+    doc.text(`Date: ${currentDate}`, 10, 20);
+    doc.autoTable({
+        head: [['Medicine', 'Quantity']],
+        body: selectedMedicines.map(med => [med.name, med.quantity]),
+    });
+
+    doc.save(`order_${currentVendor.name}_${currentDate}.pdf`);
+}
+
+
+// Send order via WhatsApp
+function sendWhatsApp() {
+    if (!selectedMedicines.length) {
+        alert('No medicines selected.');
+        return;
+    }
+
+    const orderDetails = selectedMedicines.map(med => `${med.name} - Qty: ${med.quantity}`).join('\n');
+    const message = `Order Details:\nDate: ${getCurrentDate()}\n\n${orderDetails}`;
+    const phoneNumber = currentVendor.whatsapp; // WhatsApp number associated with vendor
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+}
+
+        // Search medicines by name
+        function searchMedicines() {
+            const searchTerm = document.getElementById('medicineSearch').value.toLowerCase();
+            filteredMedicines = currentVendor.medicines.filter(medicine =>
+                medicine.name.toLowerCase().includes(searchTerm)
+            );
+            renderMedicines();
+        }
+
+        // Load vendors when the page loads
+        window.onload = loadVendors;
+    </script>
+</body>
+</html>
