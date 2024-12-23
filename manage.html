@@ -23,76 +23,72 @@
         </div>
     </div>
 
-    <!-- Modal for Adding Medicine -->
-    <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-labelledby="addMedicineModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addMedicineModalLabel">Add Medicine</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" id="medicineName" class="form-control" placeholder="Enter Medicine Name" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveMedicine()">Save Medicine</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- <script src="vendors.js"></script> -->
     <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwpOaFj3RsvEBbYOAw-rPN4Rau6MO4DOVXY6iJINQW-VvGuQ3Rbp3QjKddMT4gXpG72/exec';
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbypz-nZNA3Ur3-BOZ_krxFlXTLYriWpH5HZ122yFjyiZfZ6M5bMKp1h4_hetDosF602Fg/exec';
 
-async function addVendor() {
-    const name = document.getElementById('vendorName').value;
-    const whatsapp = document.getElementById('vendorWhatsapp').value;
-    const id = `vendor-${Date.now()}`; // Generate unique ID
-
-    try {
-        const response = await fetch(WEB_APP_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-                type: 'addVendor',
-                vendor: { id, name, whatsapp }
-            }),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        const result = await response.json();
-        if (result.success) {
-            alert('Vendor added successfully!');
+        // Fetch Vendors from Google Sheets
+        async function fetchVendors() {
+            try {
+                const response = await fetch(WEB_APP_URL + '?type=getVendors');
+                const vendors = await response.json();
+                if (vendors && vendors.length > 0) {
+                    displayVendors(vendors);
+                } else {
+                    alert('No vendors found');
+                }
+            } catch (error) {
+                console.error('Error fetching vendors:', error);
+            }
         }
-    } catch (error) {
-        console.error('Error adding vendor:', error);
-    }
-}
 
-async function addMedicine() {
-    const name = document.getElementById('medicineName').value;
-    const vendorId = document.getElementById('medicineVendorId').value;
-    const id = `medicine-${Date.now()}`; // Generate unique ID
-
-    try {
-        const response = await fetch(WEB_APP_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-                type: 'addMedicine',
-                medicine: { id, vendorId, name }
-            }),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        const result = await response.json();
-        if (result.success) {
-            alert('Medicine added successfully!');
+        // Display Vendors on Manage Page
+        function displayVendors(vendors) {
+            const vendorList = document.getElementById('vendorList');
+            vendorList.innerHTML = ''; // Clear the current list
+            vendors.forEach(vendor => {
+                const vendorDiv = document.createElement('div');
+                vendorDiv.classList.add('col-md-4');
+                vendorDiv.innerHTML = `
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">${vendor.name}</h5>
+                            <p class="card-text">WhatsApp: ${vendor.whatsapp}</p>
+                        </div>
+                    </div>
+                `;
+                vendorList.appendChild(vendorDiv);
+            });
         }
-    } catch (error) {
-        console.error('Error adding medicine:', error);
-    }
-}
 
+        // Load Vendors when the page loads
+        window.onload = fetchVendors;
+
+        // Function to Add Vendor (for testing purposes)
+        async function addVendor() {
+            const name = document.getElementById('vendorName').value;
+            const whatsapp = document.getElementById('vendorWhatsapp').value;
+            const id = `vendor-${Date.now()}`; // Generate unique ID
+
+            try {
+                const response = await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        type: 'addVendor',
+                        vendor: { id, name, whatsapp }
+                    }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const result = await response.json();
+                if (result.success) {
+                    alert('Vendor added successfully!');
+                    fetchVendors(); // Refresh the vendor list after adding
+                }
+            } catch (error) {
+                console.error('Error adding vendor:', error);
+            }
+        }
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>

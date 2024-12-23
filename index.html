@@ -5,87 +5,110 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor-Specific Medicine Order</title>
     <style>
+        :root {
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --border-color: #ccc;
+            --error-color: #ff4444;
+            --bg-gray: #f4f4f4;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            margin: 20px 0;
         }
+
         th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
+            border: 1px solid var(--border-color);
+            padding: 12px;
             text-align: left;
         }
+
         th {
-            background-color: #f4f4f4;
+            background-color: var(--bg-gray);
         }
-        .action-buttons button {
-            margin-right: 10px;
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
             padding: 10px 20px;
-            background-color: #4CAF50;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s;
         }
-        .action-buttons button:hover {
-            background-color: #45a049;
+
+        button:hover {
+            background-color: var(--primary-hover);
         }
+
+        button:disabled {
+            background-color: var(--border-color);
+            cursor: not-allowed;
+        }
+
         .search-container {
-            margin-bottom: 20px;
+            margin: 20px 0;
         }
+
         .search-container input {
-            padding: 8px;
+            padding: 12px;
             width: 100%;
             max-width: 300px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
         }
-        .vendor-selection {
-            margin-bottom: 20px;
-        }
-        .iPhone-btn {
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .iPhone-btn:hover {
-            background-color: #0056b3;
-        }
+
         .error-message {
-            color: red;
+            color: var(--error-color);
             font-size: 14px;
             margin-top: 10px;
         }
+
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.19/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
     <h1>Order Medicines</h1>
 
-    <!-- Vendor Selection -->
     <div class="vendor-selection">
         <label for="vendorSelect">Select Vendor:</label>
-        <select id="vendorSelect" onchange="loadMedicines()">
+        <select id="vendorSelect">
             <option value="">-- Select Vendor --</option>
         </select>
         <p id="vendorError" class="error-message" style="display: none;">Failed to load vendors. Please try again later.</p>
     </div>
 
-    <!-- Search Box for Medicines -->
     <div class="search-container" id="searchContainer" style="display: none;">
         <label for="medicineSearch">Search Medicines:</label>
-        <input type="text" id="medicineSearch" oninput="searchMedicines()" placeholder="Search for a medicine">
+        <input type="text" id="medicineSearch" placeholder="Search for a medicine">
     </div>
 
-    <!-- Medicine List -->
     <div>
         <h2>Available Medicines</h2>
         <table>
@@ -98,9 +121,9 @@
             </thead>
             <tbody id="medicineTable"></tbody>
         </table>
+        <p id="medicineError" class="error-message" style="display: none;">No medicines available for this vendor.</p>
     </div>
 
-    <!-- Selected Medicines -->
     <div>
         <h2>Selected Medicines</h2>
         <table>
@@ -115,86 +138,249 @@
         </table>
     </div>
 
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-        <button onclick="previewOrder()">Preview Order</button>
-        <button class="iPhone-btn" onclick="printOrder()">Print (iPhone Style)</button>
-        <button onclick="sendWhatsApp()">Send WhatsApp</button>
-        <button onclick="generatePDF()">Generate PDF</button>
+    <div class="action-buttons no-print">
+        <button onclick="previewOrder()" id="previewBtn" disabled>Preview Order</button>
+        <button onclick="printOrder()" id="printBtn" disabled>Print</button>
+        <button onclick="sendWhatsApp()" id="whatsappBtn" disabled>Send WhatsApp</button>
+        <button onclick="generatePDF()" id="pdfBtn" disabled>Generate PDF</button>
     </div>
 
     <script>
         const SHEET_ID = '1FQg-uoP3eJ3E5NhWAn3k_gJfF0TOm4yyp3955T7UlVY';
         const API_KEY = 'AIzaSyAoUbq6tei8kxKILLvXWQO9hT2DmVUK7xU';
 
-        let vendors = [];
-        let currentVendor = null;
-        let selectedMedicines = [];
-        let filteredMedicines = [];
+    class MedicineOrderSystem {
+        constructor() {
+            this.vendors = [];
+            this.currentVendor = null;
+            this.filteredMedicines = [];
+            this.selectedMedicines = [];
+            this.isLoading = false;
 
-        async function loadVendors() {
+            this.init();
+        }
+
+        async init() {
+            this.setupEventListeners();
+            await this.loadVendors();
+        }
+
+        setupEventListeners() {
+            document.getElementById('vendorSelect').addEventListener('change', () => {
+                this.clearSelectedMedicines(); // Clear order list on vendor change
+                this.loadMedicines();
+            });
+            document.getElementById('medicineSearch').addEventListener('input', (e) => this.searchMedicines(e.target.value));
+        }
+
+        async fetchData(endpoint) {
             try {
-                const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Vendors?key=${API_KEY}`;
-                const response = await fetch(url);
+                const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${endpoint}?key=${API_KEY}`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
-
-                if (!data.values) throw new Error('No vendors found');
-
-                vendors = data.values.slice(1).map(([id, name, whatsapp]) => ({ id, name, whatsapp }));
-                const vendorSelect = document.getElementById('vendorSelect');
-
-                vendors.forEach(vendor => {
-                    const option = document.createElement('option');
-                    option.value = vendor.id;
-                    option.textContent = vendor.name;
-                    vendorSelect.appendChild(option);
-                });
+                return data.values || [];
             } catch (error) {
-                console.error('Error loading vendors:', error);
+                console.error(`Error fetching ${endpoint}:`, error);
+                throw error;
+            }
+        }
+
+        async loadVendors() {
+            try {
+                this.setLoading(true);
+                const data = await this.fetchData('Vendors');
+                this.vendors = data.slice(1).map(([id, name, whatsapp]) => ({ id, name, whatsapp }));
+                this.populateVendorSelect();
+            } catch (error) {
                 document.getElementById('vendorError').style.display = 'block';
+            } finally {
+                this.setLoading(false);
             }
         }
 
-        async function loadMedicines() {
-            const vendorId = document.getElementById('vendorSelect').value;
-            if (!vendorId) {
-                currentVendor = null;
-                document.getElementById('searchContainer').style.display = 'none';
-                renderMedicines([]);
-                return;
-            }
+        async loadMedicines() {
+    const vendorId = document.getElementById('vendorSelect').value;
+    document.getElementById('searchContainer').style.display = vendorId ? 'block' : 'none';
+    
+    if (!vendorId) {
+        this.currentVendor = null;
+        this.selectedMedicines = []; // Clear selected medicines
+        this.renderSelectedMedicines();
+        this.updateActionButtons();
+        this.renderMedicines([]);
+        return;
+    }
 
-            currentVendor = vendors.find(vendor => vendor.id === vendorId);
+    try {
+        this.setLoading(true);
+        const data = await this.fetchData('Medicines');
+        this.filteredMedicines = data.slice(1)
+            .filter(row => row[1] === vendorId)
+            .map(([id, vendorId, name]) => ({ id, name }));
 
-            try {
-                const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Medicines?key=${API_KEY}`;
-                const response = await fetch(url);
-                const data = await response.json();
-                const medicines = data.values.slice(1)
-                    .filter(row => row[1] === vendorId)
-                    .map(([id, vendorId, name]) => ({ id, name }));
+        document.getElementById('medicineError').style.display = 
+            this.filteredMedicines.length === 0 ? 'block' : 'none';
+        this.renderMedicines();
+    } catch (error) {
+        this.renderMedicines([]);
+    } finally {
+        this.setLoading(false);
+    }
+}
 
-                filteredMedicines = medicines;
-                renderMedicines();
-                document.getElementById('searchContainer').style.display = 'block';
-            } catch (error) {
-                console.error('Error loading medicines:', error);
-                renderMedicines([]);
-            }
+
+        searchMedicines(query) {
+            const searchTerm = query.toLowerCase();
+            const filtered = this.filteredMedicines.filter(medicine =>
+                medicine.name.toLowerCase().includes(searchTerm)
+            );
+            this.renderMedicines(filtered);
         }
 
-        function renderMedicines() {
-            const medicineTable = document.getElementById('medicineTable');
-            medicineTable.innerHTML = filteredMedicines.map((medicine, index) => `
+        populateVendorSelect() {
+            const select = document.getElementById('vendorSelect');
+            select.innerHTML = '<option value="">-- Select Vendor --</option>' +
+                this.vendors.map(vendor =>
+                    `<option value="${vendor.id}">${vendor.name}</option>`
+                ).join('');
+        }
+
+        renderMedicines(medicines = this.filteredMedicines) {
+    this.displayedMedicines = medicines; // Track the currently displayed medicines
+    const medicineTable = document.getElementById('medicineTable');
+    medicineTable.innerHTML = medicines.map((medicine, index) => `
+        <tr>
+            <td>${medicine.name}</td>
+            <td>
+                <input type="number" min="1" id="qty-${index}" 
+                       class="quantity-input" placeholder="Quantity">
+            </td>
+            <td>
+                <button onclick="medicineSystem.addMedicine(${index})">Add</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+
+        clearSelectedMedicines() {
+            this.selectedMedicines = [];
+            this.renderSelectedMedicines();
+            this.updateActionButtons();
+        }
+
+        addMedicine(index) {
+    const qtyInput = document.getElementById(`qty-${index}`);
+    const quantity = parseInt(qtyInput.value);
+
+    if (!quantity || quantity < 1) {
+        alert('Please enter a valid quantity');
+        return;
+    }
+
+    const filteredMedicine = this.displayedMedicines[index]; // Use displayed list
+    const existing = this.selectedMedicines.find(item => item.id === filteredMedicine.id);
+
+    if (existing) {
+        existing.quantity += quantity;
+    } else {
+        this.selectedMedicines.push({ ...filteredMedicine, quantity });
+    }
+
+    qtyInput.value = '';
+    this.renderSelectedMedicines();
+    this.updateActionButtons();
+}
+
+
+        renderSelectedMedicines() {
+            const selectedTable = document.getElementById('selectedMedicinesTable');
+            selectedTable.innerHTML = this.selectedMedicines.map((medicine, index) => `
                 <tr>
                     <td>${medicine.name}</td>
-                    <td><input type="number" min="1" id="qty-${index}" placeholder="Quantity"></td>
-                    <td><button onclick="addMedicine(${index})">Add</button></td>
+                    <td>${medicine.quantity}</td>
+                    <td>
+                        <button onclick="medicineSystem.removeMedicine(${index})">Remove</button>
+                    </td>
                 </tr>
             `).join('');
         }
 
-        // Remaining functions like `addMedicine`, `previewOrder`, `generatePDF`, etc., are untouched.
+        removeMedicine(index) {
+            this.selectedMedicines.splice(index, 1);
+            this.renderSelectedMedicines();
+            this.updateActionButtons();
+        }
+
+        updateActionButtons() {
+            const hasSelectedMedicines = this.selectedMedicines.length > 0;
+            ['previewBtn', 'printBtn', 'whatsappBtn', 'pdfBtn'].forEach(btnId => {
+                document.getElementById(btnId).disabled = !hasSelectedMedicines;
+            });
+        }
+
+        setLoading(loading) {
+            this.isLoading = loading;
+            document.body.classList.toggle('loading', loading);
+        }
+
+        generateOrderSummary() {
+            return this.selectedMedicines.map(medicine =>
+                `${medicine.name}: ${medicine.quantity}`
+            ).join('\n');
+        }
+
+        previewOrder() {
+            const summary = this.generateOrderSummary();
+            alert('Order Preview:\n\n' + summary);
+        }
+
+        printOrder() {
+            window.print();
+        }
+
+        sendWhatsApp() {
+            const vendor = this.vendors.find(v => v.id === document.getElementById('vendorSelect').value);
+            if (!vendor?.whatsapp) {
+                alert('No WhatsApp number available for this vendor');
+                return;
+            }
+
+            const message = encodeURIComponent(this.generateOrderSummary());
+            window.open(`https://wa.me/${vendor.whatsapp}?text=${message}`);
+        }
+
+        generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.text('Medicine Order', 20, 20);
+            const vendorName = document.getElementById('vendorSelect').selectedOptions[0].text;
+            doc.text(`Vendor: ${vendorName}`, 20, 30);
+
+            doc.autoTable({
+                head: [['Medicine', 'Quantity']],
+                body: this.selectedMedicines.map(medicine => [
+                    medicine.name,
+                    medicine.quantity.toString()
+                ]),
+                startY: 40
+            });
+
+            doc.save('medicine-order.pdf');
+        }
+    }
+
+    const medicineSystem = new MedicineOrderSystem();
+
+    function previewOrder() { medicineSystem.previewOrder(); }
+    function printOrder() { medicineSystem.printOrder(); }
+    function sendWhatsApp() { medicineSystem.sendWhatsApp(); }
+    function generatePDF() { medicineSystem.generatePDF(); }
+
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.19/jspdf.plugin.autotable.min.js"></script>
 </body>
 </html>
