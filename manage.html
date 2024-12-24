@@ -3,101 +3,415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Vendors</title>
+    <title>Vendor Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .vendor-card {
+            transition: all 0.3s ease;
+        }
+        .vendor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .loader.active {
+            display: block;
+        }
+        .error-message {
+            color: #dc3545;
+            margin: 10px 0;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container my-5">
-        <h1 class="text-center">Manage Vendors</h1>
-        <div id="vendorList" class="row my-4"></div>
+        <h1 class="text-center mb-4">Vendor Management</h1>
+        
+        <!-- Error Message -->
+        <div id="errorMessage" class="alert alert-danger error-message"></div>
 
         <!-- Add Vendor Form -->
-        <div class="mb-4 text-center">
-            <h3>Add Vendor</h3>
-            <div class="input-group mb-3">
-                <input type="text" id="vendorName" class="form-control" placeholder="Vendor Name" aria-label="Vendor Name">
-                <input type="text" id="vendorWhatsapp" class="form-control" placeholder="Vendor WhatsApp" aria-label="Vendor WhatsApp">
-                <button class="btn btn-primary" onclick="addVendor()">Add Vendor</button>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0">Add New Vendor</h3>
+            </div>
+            <div class="card-body">
+                <form id="vendorForm" onsubmit="return false;">
+                    <div class="row g-3">
+                        <div class="col-md-5">
+                            <input type="text" id="vendorName" class="form-control" placeholder="Vendor Name" required>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" id="vendorWhatsapp" class="form-control" placeholder="WhatsApp Number" required>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary w-100" onclick="vendorSystem.addVendor()">Add Vendor</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
+
+        <!-- Loader -->
+        <div id="loader" class="loader">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Vendor List -->
+        <div id="vendorList" class="row g-4"></div>
     </div>
 
-    <!-- Modal for Adding Medicine -->
-    <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-labelledby="addMedicineModalLabel" aria-hidden="true">
+    <!-- Medicine Modal -->
+    <div class="modal fade" id="medicineModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addMedicineModalLabel">Add Medicine</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Manage Medicines</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="medicineName" class="form-control" placeholder="Enter Medicine Name" />
+                    <div class="mb-3">
+                        <input type="text" id="medicineName" class="form-control" placeholder="Medicine Name">
+                    </div>
+                    <div id="medicineList" class="list-group"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveMedicine()">Save Medicine</button>
+                    <button type="button" class="btn btn-primary" onclick="vendorSystem.addMedicine()">Add Medicine</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzwkwgYdRwfdK1uAW4x70i9h01sV5InJoi_LOuqFzO6XesPOAwePh-VmOBQNadaK5My/exec'; // Replace with your Google Apps Script Web App URL
+        class VendorManagementSystem {
+            constructor() {
+                this.WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzwkwgYdRwfdK1uAW4x70i9h01sV5InJoi_LOuqFzO6XesPOAwePh-VmOBQNadaK5My/exec';
+                this.currentVendorId = null;
+                this.init();
+            }
 
-        async function fetchVendors() {
-            try {
-                const response = await fetch(WEB_APP_URL + '?type=getVendors');
-                const vendors = await response.json();
+            init() {
+                this.fetchVendors();
+                this.setupEventListeners();
+            }
+
+            setupEventListeners() {
+                document.getElementById('vendorForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.addVendor();
+                });
+            }
+
+            setLoading(loading) {
+                const loader = document.getElementById('loader');
+                loader.classList.toggle('active', loading);
+                document.body.classList.toggle('loading', loading);
+            }
+
+            showError(message) {
+                const errorElement = document.getElementById('errorMessage');
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                setTimeout(() => {
+                    errorElement.style.display = 'none';
+                }, 5000);
+            }
+
+            async fetchWithTimeout(resource, options = {}) {
+                const timeout = options.timeout || 5000;
+                const controller = new AbortController();
+                const id = setTimeout(() => controller.abort(), timeout);
+
+                try {
+                    const response = await fetch(resource, {
+                        ...options,
+                        signal: controller.signal
+                    });
+                    clearTimeout(id);
+                    return response;
+                } catch (error) {
+                    clearTimeout(id);
+                    throw error;
+                }
+            }
+
+            async fetchVendors() {
+                try {
+                    this.setLoading(true);
+                    const response = await this.fetchWithTimeout(
+                        `${this.WEB_APP_URL}?type=getVendors`,
+                        { timeout: 10000 }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const vendors = await response.json();
+                    this.renderVendors(vendors);
+                } catch (error) {
+                    console.error('Error fetching vendors:', error);
+                    this.showError('Failed to load vendors. Please try again later.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            renderVendors(vendors) {
                 const vendorList = document.getElementById('vendorList');
-                vendorList.innerHTML = ''; // Clear current list
-
-                // Display vendors in the UI
-                vendors.forEach(vendor => {
-                    const vendorDiv = document.createElement('div');
-                    vendorDiv.classList.add('col-md-4');
-                    vendorDiv.classList.add('mb-4');
-                    vendorDiv.innerHTML = `
-                        <div class="card">
+                vendorList.innerHTML = vendors.map(vendor => `
+                    <div class="col-md-4">
+                        <div class="card vendor-card h-100">
                             <div class="card-body">
-                                <h5 class="card-title">${vendor.name}</h5>
-                                <p class="card-text">WhatsApp: ${vendor.whatsapp}</p>
+                                <h5 class="card-title">${this.escapeHtml(vendor.name)}</h5>
+                                <p class="card-text">WhatsApp: ${this.escapeHtml(vendor.whatsapp)}</p>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-outline-primary" 
+                                            onclick="vendorSystem.openMedicineModal('${vendor.id}')">
+                                        Manage Medicines
+                                    </button>
+                                    <button class="btn btn-outline-danger" 
+                                            onclick="vendorSystem.deleteVendor('${vendor.id}')">
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    `;
-                    vendorList.appendChild(vendorDiv);
-                });
-            } catch (error) {
-                console.error('Error fetching vendors:', error);
+                    </div>
+                `).join('');
             }
-        }
 
-        async function addVendor() {
-            const name = document.getElementById('vendorName').value;
-            const whatsapp = document.getElementById('vendorWhatsapp').value;
-            const id = `vendor-${Date.now()}`;
+            escapeHtml(unsafe) {
+                return unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
 
-            try {
-                const response = await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        type: 'addVendor',
-                        vendor: { id, name, whatsapp }
-                    }),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                const result = await response.json();
-                if (result.success) {
-                    alert('Vendor added successfully!');
-                    fetchVendors(); // Refresh the vendor list
+            async addVendor() {
+                const nameInput = document.getElementById('vendorName');
+                const whatsappInput = document.getElementById('vendorWhatsapp');
+                
+                const name = nameInput.value.trim();
+                const whatsapp = whatsappInput.value.trim();
+
+                if (!name || !whatsapp) {
+                    this.showError('Please fill in all fields');
+                    return;
                 }
-            } catch (error) {
-                console.error('Error adding vendor:', error);
+
+                try {
+                    this.setLoading(true);
+                    const response = await this.fetchWithTimeout(
+                        this.WEB_APP_URL,
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                type: 'addVendor',
+                                vendor: {
+                                    id: 'vendor-' + Date.now(),
+                                    name,
+                                    whatsapp
+                                }
+                            })
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.success) {
+                        nameInput.value = '';
+                        whatsappInput.value = '';
+                        this.fetchVendors();
+                    } else {
+                        throw new Error(result.message || 'Failed to add vendor');
+                    }
+                } catch (error) {
+                    console.error('Error adding vendor:', error);
+                    this.showError('Failed to add vendor. Please try again.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            async deleteVendor(vendorId) {
+                if (!confirm('Are you sure you want to delete this vendor?')) {
+                    return;
+                }
+
+                try {
+                    this.setLoading(true);
+                    const response = await this.fetchWithTimeout(
+                        this.WEB_APP_URL,
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                type: 'deleteVendor',
+                                vendorId
+                            })
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.success) {
+                        this.fetchVendors();
+                    } else {
+                        throw new Error(result.message || 'Failed to delete vendor');
+                    }
+                } catch (error) {
+                    console.error('Error deleting vendor:', error);
+                    this.showError('Failed to delete vendor. Please try again.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            openMedicineModal(vendorId) {
+                this.currentVendorId = vendorId;
+                const modal = new bootstrap.Modal(document.getElementById('medicineModal'));
+                modal.show();
+                this.fetchMedicines(vendorId);
+            }
+
+            async fetchMedicines(vendorId) {
+                try {
+                    this.setLoading(true);
+                    const response = await this.fetchWithTimeout(
+                        `${this.WEB_APP_URL}?type=getMedicines&vendorId=${vendorId}`
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const medicines = await response.json();
+                    this.renderMedicines(medicines);
+                } catch (error) {
+                    console.error('Error fetching medicines:', error);
+                    this.showError('Failed to load medicines. Please try again.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            renderMedicines(medicines) {
+                const medicineList = document.getElementById('medicineList');
+                medicineList.innerHTML = medicines.map(medicine => `
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        ${this.escapeHtml(medicine.name)}
+                        <button class="btn btn-sm btn-danger" 
+                                onclick="vendorSystem.deleteMedicine('${medicine.id}')">
+                            Remove
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            async addMedicine() {
+                const nameInput = document.getElementById('medicineName');
+                const name = nameInput.value.trim();
+
+                if (!name) {
+                    this.showError('Please enter a medicine name');
+                    return;
+                }
+
+                try {
+                    this.setLoading(true);
+                    const response = await this.fetchWithTimeout(
+                        this.WEB_APP_URL,
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                type: 'addMedicine',
+                                medicine: {
+                                    id: 'medicine-' + Date.now(),
+                                    name,
+                                    vendorId: this.currentVendorId
+                                }
+                            })
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.success) {
+                        nameInput.value = '';
+                        this.fetchMedicines(this.currentVendorId);
+                    } else {
+                        throw new Error(result.message || 'Failed to add medicine');
+                    }
+                } catch (error) {
+                    console.error('Error adding medicine:', error);
+                    this.showError('Failed to add medicine. Please try again.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            async deleteMedicine(medicineId) {
+                if (!confirm('Are you sure you want to delete this medicine?')) {
+                    return;
+                }
+
+                try {
+                    this.setLoading(true);
+                    const response = await this.fetchWithTimeout(
+                        this.WEB_APP_URL,
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                type: 'deleteMedicine',
+                                medicineId
+                            })
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.success) {
+                        this.fetchMedicines(this.currentVendorId);
+                    } else {
+                        throw new Error(result.message || 'Failed to delete medicine');
+                    }
+                } catch (error) {
+                    console.error('Error deleting medicine:', error);
+                    this.showError('Failed to delete medicine. Please try again.');
+                } finally {
+                    this.setLoading(false);
+                }
             }
         }
 
-        // Fetch vendors when the page loads
-        window.onload = fetchVendors;
+        // Initialize the system
+        const vendorSystem = new VendorManagementSystem();
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
