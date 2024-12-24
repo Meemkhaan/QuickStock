@@ -23,51 +23,59 @@
         </div>
     </div>
 
-    <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbypz-nZNA3Ur3-BOZ_krxFlXTLYriWpH5HZ122yFjyiZfZ6M5bMKp1h4_hetDosF602Fg/exec';
+    <!-- Modal for Adding Medicine -->
+    <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-labelledby="addMedicineModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addMedicineModalLabel">Add Medicine</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="medicineName" class="form-control" placeholder="Enter Medicine Name" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveMedicine()">Save Medicine</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Fetch Vendors from Google Sheets
+    <script>
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzwkwgYdRwfdK1uAW4x70i9h01sV5InJoi_LOuqFzO6XesPOAwePh-VmOBQNadaK5My/exec'; // Replace with your Google Apps Script Web App URL
+
         async function fetchVendors() {
             try {
                 const response = await fetch(WEB_APP_URL + '?type=getVendors');
                 const vendors = await response.json();
-                if (vendors && vendors.length > 0) {
-                    displayVendors(vendors);
-                } else {
-                    alert('No vendors found');
-                }
+                const vendorList = document.getElementById('vendorList');
+                vendorList.innerHTML = ''; // Clear current list
+
+                // Display vendors in the UI
+                vendors.forEach(vendor => {
+                    const vendorDiv = document.createElement('div');
+                    vendorDiv.classList.add('col-md-4');
+                    vendorDiv.classList.add('mb-4');
+                    vendorDiv.innerHTML = `
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${vendor.name}</h5>
+                                <p class="card-text">WhatsApp: ${vendor.whatsapp}</p>
+                            </div>
+                        </div>
+                    `;
+                    vendorList.appendChild(vendorDiv);
+                });
             } catch (error) {
                 console.error('Error fetching vendors:', error);
             }
         }
 
-        // Display Vendors on Manage Page
-        function displayVendors(vendors) {
-            const vendorList = document.getElementById('vendorList');
-            vendorList.innerHTML = ''; // Clear the current list
-            vendors.forEach(vendor => {
-                const vendorDiv = document.createElement('div');
-                vendorDiv.classList.add('col-md-4');
-                vendorDiv.innerHTML = `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">${vendor.name}</h5>
-                            <p class="card-text">WhatsApp: ${vendor.whatsapp}</p>
-                        </div>
-                    </div>
-                `;
-                vendorList.appendChild(vendorDiv);
-            });
-        }
-
-        // Load Vendors when the page loads
-        window.onload = fetchVendors;
-
-        // Function to Add Vendor (for testing purposes)
         async function addVendor() {
             const name = document.getElementById('vendorName').value;
             const whatsapp = document.getElementById('vendorWhatsapp').value;
-            const id = `vendor-${Date.now()}`; // Generate unique ID
+            const id = `vendor-${Date.now()}`;
 
             try {
                 const response = await fetch(WEB_APP_URL, {
@@ -81,12 +89,15 @@
                 const result = await response.json();
                 if (result.success) {
                     alert('Vendor added successfully!');
-                    fetchVendors(); // Refresh the vendor list after adding
+                    fetchVendors(); // Refresh the vendor list
                 }
             } catch (error) {
                 console.error('Error adding vendor:', error);
             }
         }
+
+        // Fetch vendors when the page loads
+        window.onload = fetchVendors;
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
