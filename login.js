@@ -26,7 +26,9 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     const users = await fetchUsers();
 
     if (users[username] && users[username] === password) {
-        alert("Login successful!");
+        // alert("Login successful!");
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("username", username);
         window.location.href = "dashboard.html"; // Redirect to a dashboard or another page
     } else {
         const alertMessage = document.getElementById("alertMessage");
