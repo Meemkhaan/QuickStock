@@ -177,171 +177,227 @@
         </table>
     </div>
 
-    <script>
-        const SHEET_ID = '1FQg-uoP3eJ3E5NhWAn3k_gJfF0TOm4yyp3955T7UlVY';
-        const API_KEY = 'AIzaSyAoUbq6tei8kxKILLvXWQO9hT2DmVUK7xU';
+<script>
+    class ManagementSystem {
+    constructor() {
+        this.vendors = [];
+        this.medicines = [];
+        this.SHEET_ID = '1FQg-uoP3eJ3E5NhWAn3k_gJfF0TOm4yyp3955T7UlVY';
+        this.API_KEY = 'AIzaSyAoUbq6tei8kxKILLvXWQO9hT2DmVUK7xU';
+        this.SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwkwgYdRwfdK1uAW4x70i9h01sV5InJoi_LOuqFzO6XesPOAwePh-VmOBQNadaK5My/exec'; // Replace with your deployed script URL
+        this.init();
+    }
 
-        class ManagementSystem {
-            constructor() {
-                this.vendors = [];
-                this.medicines = [];
-                this.init();
-            }
+    async init() {
+        await this.loadVendors();
+        await this.loadMedicines();
+        this.setupEventListeners();
+    }
 
-            async init() {
-                await this.loadVendors();
-                await this.loadMedicines();
-                this.setupEventListeners();
-            }
+    setupEventListeners() {
+        document.getElementById('vendorForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.addVendor();
+        });
 
-            setupEventListeners() {
-                document.getElementById('vendorForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.addVendor();
-                });
+        document.getElementById('medicineForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.addMedicine();
+        });
+    }
 
-                document.getElementById('medicineForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.addMedicine();
-                });
-            }
-
-            async fetchData(endpoint) {
-                try {
-                    const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${endpoint}?key=${API_KEY}`);
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    const data = await response.json();
-                    return data.values || [];
-                } catch (error) {
-                    console.error(`Error fetching ${endpoint}:`, error);
-                    this.showMessage('Error loading data. Please try again.', 'error');
-                    return [];
-                }
-            }
-
-            async loadVendors() {
-                const data = await this.fetchData('Vendors');
-                this.vendors = data.slice(1).map(([id, name, whatsapp]) => ({ id, name, whatsapp }));
-                this.renderVendors();
-                this.updateVendorSelect();
-            }
-
-            async loadMedicines() {
-                const data = await this.fetchData('Medicines');
-                this.medicines = data.slice(1).map(([id, vendorId, name]) => ({ id, vendorId, name }));
-                this.renderMedicines();
-            }
-
-            renderVendors() {
-                const tbody = document.querySelector('#vendorTable tbody');
-                tbody.innerHTML = this.vendors.map(vendor => `
-                    <tr>
-                        <td>${vendor.name}</td>
-                        <td>${vendor.whatsapp || '-'}</td>
-                        <td>
-                            <button class="action-button" onclick="managementSystem.editVendor('${vendor.id}')">Edit</button>
-                            <button class="action-button delete-button" onclick="managementSystem.deleteVendor('${vendor.id}')">Delete</button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-
-            renderMedicines() {
-                const tbody = document.querySelector('#medicineTable tbody');
-                tbody.innerHTML = this.medicines.map(medicine => {
-                    const vendor = this.vendors.find(v => v.id === medicine.vendorId);
-                    return `
-                        <tr>
-                            <td>${medicine.name}</td>
-                            <td>${vendor ? vendor.name : 'Unknown Vendor'}</td>
-                            <td>
-                                <button class="action-button" onclick="managementSystem.editMedicine('${medicine.id}')">Edit</button>
-                                <button class="action-button delete-button" onclick="managementSystem.deleteMedicine('${medicine.id}')">Delete</button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-
-            updateVendorSelect() {
-                const select = document.getElementById('medicineVendor');
-                select.innerHTML = '<option value="">Select Vendor</option>' +
-                    this.vendors.map(vendor =>
-                        `<option value="${vendor.id}">${vendor.name}</option>`
-                    ).join('');
-            }
-
-            async addVendor() {
-                const name = document.getElementById('vendorName').value;
-                const whatsapp = document.getElementById('vendorWhatsapp').value;
-                
-                // Here you would typically make an API call to add the vendor to your Google Sheet
-                // For now, we'll just show a success message
-                this.showMessage('Vendor added successfully!', 'success');
-                document.getElementById('vendorForm').reset();
-            }
-
-            async addMedicine() {
-                const vendorId = document.getElementById('medicineVendor').value;
-                const name = document.getElementById('medicineName').value;
-                
-                // Here you would typically make an API call to add the medicine to your Google Sheet
-                // For now, we'll just show a success message
-                this.showMessage('Medicine added successfully!', 'success');
-                document.getElementById('medicineForm').reset();
-            }
-
-            editVendor(id) {
-                const vendor = this.vendors.find(v => v.id === id);
-                if (!vendor) return;
-                
-                // Implement edit functionality
-                console.log('Editing vendor:', vendor);
-            }
-
-            deleteVendor(id) {
-                if (confirm('Are you sure you want to delete this vendor?')) {
-                    // Implement delete functionality
-                    console.log('Deleting vendor:', id);
-                }
-            }
-
-            editMedicine(id) {
-                const medicine = this.medicines.find(m => m.id === id);
-                if (!medicine) return;
-                
-                // Implement edit functionality
-                console.log('Editing medicine:', medicine);
-            }
-
-            deleteMedicine(id) {
-                if (confirm('Are you sure you want to delete this medicine?')) {
-                    // Implement delete functionality
-                    console.log('Deleting medicine:', id);
-                }
-            }
-
-            showMessage(message, type) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${type}`;
-                messageDiv.textContent = message;
-                document.body.insertBefore(messageDiv, document.body.firstChild);
-                setTimeout(() => messageDiv.remove(), 3000);
-            }
+    // Keep existing fetch functionality for reading data
+    async fetchData(endpoint) {
+        try {
+            const response = await fetch(
+                `https://sheets.googleapis.com/v4/spreadsheets/${this.SHEET_ID}/values/${endpoint}?key=${this.API_KEY}`
+            );
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const data = await response.json();
+            return data.values || [];
+        } catch (error) {
+            console.error(`Error fetching ${endpoint}:`, error);
+            this.showMessage('Error loading data. Please try again.', 'error');
+            return [];
         }
+    }
 
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
+    // Add new method for write operations
+    async makeRequest(operation, data) {
+        try {
+            const response = await fetch(this.SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: operation,
+                    data: data
+                })
             });
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
+            
+            if (!response.ok) throw new Error('Network response was not ok');
+            return await response.json();
+        } catch (error) {
+            console.error('Error:', error);
+            this.showMessage('Operation failed: ' + error.message, 'error');
+            return null;
         }
+    }
 
-        const managementSystem = new ManagementSystem();
-    </script>
+    async loadVendors() {
+        const data = await this.fetchData('Vendors');
+        this.vendors = data.slice(1).map(([id, name, whatsapp]) => ({ id, name, whatsapp }));
+        this.renderVendors();
+        this.updateVendorSelect();
+    }
+
+    async loadMedicines() {
+        const data = await this.fetchData('Medicines');
+        this.medicines = data.slice(1).map(([id, vendorId, name]) => ({ id, vendorId, name }));
+        this.renderMedicines();
+    }
+
+    renderVendors() {
+        const tbody = document.querySelector('#vendorTable tbody');
+        tbody.innerHTML = this.vendors.map(vendor => `
+            <tr>
+                <td>${vendor.name}</td>
+                <td>${vendor.whatsapp || '-'}</td>
+                <td>
+                    <button class="action-button" onclick="managementSystem.editVendor('${vendor.id}')">Edit</button>
+                    <button class="action-button delete-button" onclick="managementSystem.deleteVendor('${vendor.id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    renderMedicines() {
+        const tbody = document.querySelector('#medicineTable tbody');
+        tbody.innerHTML = this.medicines.map(medicine => {
+            const vendor = this.vendors.find(v => v.id === medicine.vendorId);
+            return `
+                <tr>
+                    <td>${medicine.name}</td>
+                    <td>${vendor ? vendor.name : 'Unknown Vendor'}</td>
+                    <td>
+                        <button class="action-button" onclick="managementSystem.editMedicine('${medicine.id}')">Edit</button>
+                        <button class="action-button delete-button" onclick="managementSystem.deleteMedicine('${medicine.id}')">Delete</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    updateVendorSelect() {
+        const select = document.getElementById('medicineVendor');
+        select.innerHTML = '<option value="">Select Vendor</option>' +
+            this.vendors.map(vendor =>
+                `<option value="${vendor.id}">${vendor.name}</option>`
+            ).join('');
+    }
+
+    async addVendor() {
+        const name = document.getElementById('vendorName').value;
+        const whatsapp = document.getElementById('vendorWhatsapp').value;
+        
+        const response = await this.makeRequest('addVendor', { name, whatsapp });
+        
+        if (response && response.success) {
+            this.showMessage('Vendor added successfully!', 'success');
+            document.getElementById('vendorForm').reset();
+            await this.loadVendors(); // Reload the data
+        }
+    }
+
+    async editVendor(id) {
+        const vendor = this.vendors.find(v => v.id === id);
+        if (!vendor) return;
+        
+        const name = prompt('Enter new name:', vendor.name);
+        const whatsapp = prompt('Enter new WhatsApp number:', vendor.whatsapp);
+        
+        if (name === null || whatsapp === null) return;
+        
+        const response = await this.makeRequest('updateVendor', {
+            id,
+            name,
+            whatsapp
+        });
+        
+        if (response && response.success) {
+            this.showMessage('Vendor updated successfully!', 'success');
+            await this.loadVendors(); // Reload the data
+        }
+    }
+
+    async deleteVendor(id) {
+        if (!confirm('Are you sure you want to delete this vendor?')) return;
+        
+        const response = await this.makeRequest('deleteVendor', { id });
+        
+        if (response && response.success) {
+            this.showMessage('Vendor deleted successfully!', 'success');
+            await this.loadVendors(); // Reload the data
+        }
+    }
+
+    async addMedicine() {
+        const vendorId = document.getElementById('medicineVendor').value;
+        const name = document.getElementById('medicineName').value;
+        
+        if (!vendorId) {
+            this.showMessage('Please select a vendor', 'error');
+            return;
+        }
+        
+        const response = await this.makeRequest('addMedicine', { vendorId, name });
+        
+        if (response && response.success) {
+            this.showMessage('Medicine added successfully!', 'success');
+            document.getElementById('medicineForm').reset();
+            await this.loadMedicines(); // Reload the data
+        }
+    }
+
+    async editMedicine(id) {
+        const medicine = this.medicines.find(m => m.id === id);
+        if (!medicine) return;
+        
+        const name = prompt('Enter new name:', medicine.name);
+        const vendor = prompt('Enter new vendor ID:', medicine.vendorId);
+        
+        if (name === null || vendor === null) return;
+        
+        const response = await this.makeRequest('updateMedicine', {
+            id,
+            name,
+            vendorId: vendor
+        });
+        
+        if (response && response.success) {
+            this.showMessage('Medicine updated successfully!', 'success');
+            await this.loadMedicines(); // Reload the data
+        }
+    }
+
+    async deleteMedicine(id) {
+        if (!confirm('Are you sure you want to delete this medicine?')) return;
+        
+        const response = await this.makeRequest('deleteMedicine', { id });
+        
+        if (response && response.success) {
+            this.showMessage('Medicine deleted successfully!', 'success');
+            await this.loadMedicines(); // Reload the data
+        }
+    }
+
+    showMessage(message, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}`;
+        messageDiv.textContent = message;
+        document.body.insertBefore(messageDiv, document.body.firstChild);
+        setTimeout(() => messageDiv.remove(), 3000);
+    }
+}
+
+</script>
 </body>
 </html>
