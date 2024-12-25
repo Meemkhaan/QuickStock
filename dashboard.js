@@ -273,24 +273,40 @@ class MedicineOrderSystem {
     }
 
     sendWhatsApp() {
-        const vendor = this.vendors.find(v => v.id === document.getElementById('vendorSelect').value);
-        if (!vendor?.whatsapp) {
-            alert('No WhatsApp number available for this vendor');
+        const vendorSelect = document.getElementById('vendorSelect');
+        const selectedVendor = this.vendors.find(v => v.id === vendorSelect.value);
+        
+        if (!selectedVendor || !selectedVendor.whatsapp) {
+            alert('No WhatsApp number available for this vendor.');
             return;
         }
-
+    
+        // Generate order summary and encode message
         const message = encodeURIComponent(this.generateOrderSummary(true));
-        window.open(`https://wa.me/${vendor.whatsapp}?text=${message}`);
+        const whatsappUrl = `https://wa.me/${selectedVendor.whatsapp}?text=${message}`;
+    
+        // Open WhatsApp link
+        try {
+            window.location.href = whatsappUrl; // Ensures proper behavior on mobile
+        } catch (error) {
+            console.error('Error opening WhatsApp:', error);
+            alert('Failed to open WhatsApp. Please try again.');
+        }
     }
+    
 
     generatePDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
+        // Get the current date in YYYY-MM-DD format
+        const orderDate = new Date().toISOString().split('T')[0]; 
     
         // Add PDF content
         doc.text('Medicine Order', 20, 20);
         const vendorName = document.getElementById('vendorSelect').selectedOptions[0].text;
         doc.text(`Vendor: ${vendorName}`, 20, 30);
+        doc.text(`Vendor: ${orderDate}`, 20, 40);
+
     
         doc.autoTable({
             head: [['Medicine', 'Quantity']],
@@ -300,9 +316,6 @@ class MedicineOrderSystem {
             ]),
             startY: 40
         });
-    
-        // Get the current date in YYYY-MM-DD format
-        const orderDate = new Date().toISOString().split('T')[0]; 
     
         // Generate the file name
         const fileName = `Medicine-Order-${orderDate}-${vendorName.replace(/\s+/g, '_')}.pdf`;
