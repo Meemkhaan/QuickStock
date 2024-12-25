@@ -275,24 +275,32 @@ class MedicineOrderSystem {
     sendWhatsApp() {
         const vendorSelect = document.getElementById('vendorSelect');
         const selectedVendor = this.vendors.find(v => v.id === vendorSelect.value);
-        
+    
         if (!selectedVendor || !selectedVendor.whatsapp) {
             alert('No WhatsApp number available for this vendor.');
             return;
         }
     
-        // Generate order summary and encode message
-        const message = encodeURIComponent(this.generateOrderSummary(true));
-        const whatsappUrl = `https://wa.me/${selectedVendor.whatsapp}?text=${message}`;
+        // Ensure the phone number is in the correct format
+        const whatsappNumber = selectedVendor.whatsapp.replace(/[^\d]/g, ''); // Remove non-numeric characters
+        if (whatsappNumber.length < 10) {
+            alert('Invalid WhatsApp number.');
+            return;
+        }
     
-        // Open WhatsApp link
+        // Generate the message
+        const message = encodeURIComponent(this.generateOrderSummary(true));
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+    
+        // Open the WhatsApp link
         try {
-            window.location.href = whatsappUrl; // Ensures proper behavior on mobile
+            window.location.href = whatsappUrl; // Works better on mobile
         } catch (error) {
             console.error('Error opening WhatsApp:', error);
             alert('Failed to open WhatsApp. Please try again.');
         }
     }
+    
     
 
     generatePDF() {
