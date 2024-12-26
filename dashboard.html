@@ -2,223 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vendor-Specific Medicine Order</title>
-    <style>
-        :root {
-    --primary-color: #4CAF50;
-    --primary-hover: #45a049;
-    --border-color: #ccc;
-    --error-color: #ff4444;
-    --bg-gray: #f4f4f4;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    gap: 10px;
-}
-
-.header h1 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: var(--primary-color);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 0.9rem;
-    word-wrap: break-word;
-}
-
-th, td {
-    border: 1px solid var(--border-color);
-    padding: 12px;
-    text-align: left;
-}
-
-th {
-    background-color: var(--bg-gray);
-}
-
-.action-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: var(--primary-hover);
-}
-
-button:disabled {
-    background-color: var(--border-color);
-    cursor: not-allowed;
-}
-
-.search-container {
-    margin: 20px 0;
-}
-
-.search-container input {
-    padding: 12px;
-    width: 100%;
-    max-width: 300px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-}
-
-.error-message {
-    color: var(--error-color);
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-.loading {
-    opacity: 0.5;
-    pointer-events: none;
-}
-
-.float-button {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background-color: var(--primary-color);
-    color: white;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    z-index: 1000;
-}
-
-.float-button:hover {
-    background-color: var(--primary-hover);
-}
-
-@media print {
-    .no-print {
-        display: none;
-    }
-    
-    .print-only {
-        display: block !important;
-    }
-    
-    .print-header {
-        border-bottom: 2px solid #000;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-    }
-}
-
-/* Responsive styles for mobile */
-@media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-
-    .header h1 {
-        font-size: 1.2rem;
-    }
-
-    table {
-        font-size: 0.8rem;
-    }
-
-    .action-buttons {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    button {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-
-    .float-button {
-        width: 50px;
-        height: 50px;
-        font-size: 0.8rem;
-    }
-
-    .search-container input {
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-
-    .header h1 {
-        font-size: 1rem;
-    }
-
-    th, td {
-        font-size: 0.7rem;
-        padding: 8px;
-    }
-
-    button {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-}
-
-
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Medicine Order</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="header no-print">
@@ -227,73 +16,65 @@ button:disabled {
     </div>
 
     <div class="container">
-        <!-- Print Header -->
         <div class="print-header print-only" style="display: none;">
             <h2>Medicine Order Summary</h2>
             <p id="printVendorName"></p>
             <p id="printDate"></p>
         </div>
 
-    <div class="vendor-selection">
-        <label for="vendorSelect">Select Vendor:</label>
-        <select id="vendorSelect">
-            <option value="">-- Select Vendor --</option>
-        </select>
-        <p id="vendorError" class="error-message" style="display: none;">Failed to load vendors. Please try again later.</p>
+        <div class="vendor-selection">
+            <label for="vendorSelect">Select Vendor</label>
+            <select id="vendorSelect">
+                <option value="">Choose a vendor</option>
+            </select>
+            <p id="vendorError" class="error-message" style="display: none;">Failed to load vendors</p>
+        </div>
+
+        <div class="search-container" id="searchContainer" style="display: none;">
+            <input type="text" id="medicineSearch" placeholder="Search medicines...">
+        </div>
+
+        <div id="medicineListSection">
+            <h2>Available Medicines</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Quantity</th>
+                        <th>Add</th>
+                    </tr>
+                </thead>
+                <tbody id="medicineTable"></tbody>
+            </table>
+            <p id="medicineError" class="error-message" style="display: none;">No medicines found</p>
+        </div>
+
+        <div id="selectedMedicinesSection">
+            <h2>Selected Medicines</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Quantity</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="selectedMedicinesTable"></tbody>
+            </table>
+        </div>
     </div>
 
-    <div class="search-container" id="searchContainer" style="display: none;">
-        <label for="medicineSearch">Search Medicines:</label>
-        <input type="text" id="medicineSearch" placeholder="Search for a medicine">
-    </div>
-
-    <div>
-        <h2>Available Medicines</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Medicine</th>
-                    <th>Quantity</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="medicineTable"></tbody>
-        </table>
-        <p id="medicineError" class="error-message" style="display: none;">No medicines available for this vendor.</p>
-    </div>
-    <div class="vendor-selection no-print">
-    <div id="selected-medicines-section">
-        <h2>Selected Medicines</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Medicine</th>
-                    <th>Quantity</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="selectedMedicinesTable"></tbody>
-        </table>
-    </div>
-</div>
-</div>
-
-<div class="float-button no-print" id="scrollToSelected" title="Go to Selected Medicines">
-    ↓
-</div>
+    <div class="float-button no-print" id="scrollToSelected">↓</div>
 
     <div class="action-buttons no-print">
-        <button onclick="previewOrder()" id="previewBtn" disabled>Preview Order</button>
+        <button onclick="previewOrder()" id="previewBtn" disabled>Preview</button>
         <button onclick="printOrder()" id="printBtn" disabled>Print</button>
-        <button onclick="sendWhatsApp()" id="whatsappBtn" disabled>Send WhatsApp</button>
-        <button onclick="generatePDF()" id="pdfBtn" disabled>Generate PDF</button>
+        <button onclick="sendWhatsApp()" id="whatsappBtn" disabled>WhatsApp</button>
+        <button onclick="generatePDF()" id="pdfBtn" disabled>PDF</button>
     </div>
-
-    <script src="dashboard.js"></script>
-
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.19/jspdf.plugin.autotable.min.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>
