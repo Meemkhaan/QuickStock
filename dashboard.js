@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
         // Display user information
-        document.getElementById("welcomeMessage").textContent = `Welcome, ${businessName}!`;
+    document.getElementById("welcomeMessage").textContent = `Welcome, ${businessName}!`;
 });
 
 document.getElementById("logoutButton").addEventListener("click", () => {
@@ -50,12 +50,23 @@ class MedicineOrderSystem {
 
     setupEventListeners() {
         document.getElementById('vendorSelect').addEventListener('change', () => {
+            if (this.selectedMedicines.length > 0) {
+                const confirmChange = confirm(
+                    "Changing the vendor will clear the selected medicines. Do you want to continue?"
+                );
+                if (!confirmChange) {
+                    document.getElementById('vendorSelect').value = this.currentVendor?.id || "";
+                    return;
+                }
+            }
             this.clearSelectedMedicines();
             this.loadMedicines();
         });
-        document.getElementById('medicineSearch').addEventListener('input', (e) => 
-            this.searchMedicines(e.target.value));
+        document.getElementById('medicineSearch').addEventListener('input', (e) =>
+            this.searchMedicines(e.target.value)
+        );
     }
+    
 
     async fetchData(endpoint) {
         try {
@@ -99,9 +110,11 @@ class MedicineOrderSystem {
     }
 
     async loadMedicines() {
-        const vendorId = document.getElementById('vendorSelect').value;
+        const vendorId = localStorage.getItem('currentVendor') || document.getElementById('vendorSelect').value;
+        document.getElementById('vendorSelect').value = vendorId;
+    
         document.getElementById('searchContainer').style.display = vendorId ? 'block' : 'none';
-        
+    
         if (!vendorId) {
             this.currentVendor = null;
             this.selectedMedicines = [];
@@ -110,15 +123,17 @@ class MedicineOrderSystem {
             this.renderMedicines([]);
             return;
         }
-
+    
+        localStorage.setItem('currentVendor', vendorId); // Save vendor selection
+    
         try {
             this.setLoading(true);
             const data = await this.fetchData('Medicines');
             this.filteredMedicines = data.slice(1)
                 .filter(row => row[1] === vendorId)
                 .map(([id, vendorId, name]) => ({ id, name }));
-
-            document.getElementById('medicineError').style.display = 
+    
+            document.getElementById('medicineError').style.display =
                 this.filteredMedicines.length === 0 ? 'block' : 'none';
             this.renderMedicines();
         } catch (error) {
@@ -127,6 +142,7 @@ class MedicineOrderSystem {
             this.setLoading(false);
         }
     }
+    
 
     searchMedicines(query) {
         const searchTerm = query.toLowerCase();
@@ -160,29 +176,39 @@ class MedicineOrderSystem {
             </tr>
         `).join('');
     }
+    
 
     addMedicine(index) {
         const qtyInput = document.getElementById(`qty-${index}`);
         const quantity = parseInt(qtyInput.value);
-
+    
         if (!quantity || quantity < 1) {
             alert('Please enter a valid quantity');
             return;
         }
-
+    
         const filteredMedicine = this.displayedMedicines[index];
         const existing = this.selectedMedicines.find(item => item.id === filteredMedicine.id);
-
+    
         if (existing) {
             existing.quantity += quantity;
         } else {
             this.selectedMedicines.push({ ...filteredMedicine, quantity });
         }
-
+    
+        // Clear the quantity input and search box
         qtyInput.value = '';
+        document.getElementById('medicineSearch').value = '';
+    
+        // Reload the full list of medicines
+        this.renderMedicines();
+    
+        // Update the selected medicines list
         this.renderSelectedMedicines();
         this.updateActionButtons();
     }
+    
+    
 
     renderSelectedMedicines() {
         const selectedTable = document.getElementById('selectedMedicinesTable');
@@ -223,7 +249,7 @@ class MedicineOrderSystem {
 
     generateOrderSummary(includeDate = false) {
         const date = new Date().toLocaleDateString();
-        const headerLine = includeDate ? `Order Date: ${date} By: \n\n` : '';
+        const headerLine = includeDate ? `Order Date: ${date}\n\n` : '';
         return headerLine + this.selectedMedicines.map(medicine =>
             `${medicine.name}: ${medicine.quantity}`
         ).join('\n');
@@ -235,12 +261,10 @@ class MedicineOrderSystem {
     }
 
     printOrder() {
-        // Create a new window for print
         const printWindow = window.open('', '_blank');
         const vendorName = document.getElementById('vendorSelect').selectedOptions[0].text;
-        const OwnerName = "Bismillah Medical Store";
-        
-        // Build print content
+        const ownerName = localStorage.getItem("businessName") || "Unknown Owner";
+    
         printWindow.document.write(`
             <!DOCTYPE html>
             <html>
@@ -264,7 +288,7 @@ class MedicineOrderSystem {
             </head>
             <body>
                 <h2>Medicine Order Summary</h2>
-                <p><strong>From:</strong> ${OwnerName}</p>
+                <p><strong>From:</strong> ${ownerName}</p>
                 <p><strong>Vendor:</strong> ${vendorName}</p>
                 <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
                 <table>
@@ -290,36 +314,36 @@ class MedicineOrderSystem {
         printWindow.document.close();
         printWindow.focus();
         
-        // Wait for content to load then print
         setTimeout(() => {
             printWindow.print();
             printWindow.close();
         }, 250);
     }
+    
 
     sendWhatsApp() {
         const vendorSelect = document.getElementById('vendorSelect');
         const selectedVendor = this.vendors.find(v => v.id === vendorSelect.value);
+        const ownerName = localStorage.getItem("businessName") || "Unknown Owner";
     
         if (!selectedVendor || !selectedVendor.whatsapp) {
             alert('No WhatsApp number available for this vendor.');
             return;
         }
     
-        // Ensure the phone number is in the correct format
-        const whatsappNumber = selectedVendor.whatsapp.replace(/[^\d]/g, ''); // Remove non-numeric characters
+        const whatsappNumber = selectedVendor.whatsapp.replace(/[^\d]/g, '');
         if (whatsappNumber.length < 10) {
             alert('Invalid WhatsApp number.');
             return;
         }
     
-        // Generate the message
-        const message = encodeURIComponent(this.generateOrderSummary(true));
+        const message = encodeURIComponent(
+            `${ownerName} has placed a new medicine order:\n${this.generateOrderSummary(true)}`
+        );
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     
-        // Open the WhatsApp link
         try {
-            window.location.href = whatsappUrl; // Works better on mobile
+            window.open(whatsappUrl, '_blank');
         } catch (error) {
             console.error('Error opening WhatsApp:', error);
             alert('Failed to open WhatsApp. Please try again.');
@@ -331,31 +355,35 @@ class MedicineOrderSystem {
     generatePDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        // Get the current date in YYYY-MM-DD format
-        const orderDate = new Date().toISOString().split('T')[0]; 
-    
-        // Add PDF content
-        doc.text('Medicine Order', 20, 20);
+        const currentDate = new Date();
+        const orderDate = currentDate.toLocaleDateString("en-GB").replace(/\//g, '-'); // Format as DD-MM-YYYY
         const vendorName = document.getElementById('vendorSelect').selectedOptions[0].text;
-        doc.text(`Vendor: ${vendorName}`, 20, 30);
-        doc.text(`Order Date: ${orderDate}`, 20, 40);
-
+        const ownerName = localStorage.getItem("businessName") || "Unknown Owner";
     
+        // Set smaller font size
+        doc.setFontSize(10);
+    
+        // Adjust line spacing by reducing the Y-coordinate increment
+        doc.text('Medicine Order', 20, 20);
+        doc.text(`From: ${ownerName}`, 20, 25); // Adjusted Y-coordinate
+        doc.text(`Vendor: ${vendorName}`, 20, 30); // Adjusted Y-coordinate
+        doc.text(`Order Date: ${orderDate}`, 20, 35); // Adjusted Y-coordinate
+    
+        // Add table starting at an adjusted position
         doc.autoTable({
             head: [['Medicine', 'Quantity']],
             body: this.selectedMedicines.map(medicine => [
                 medicine.name,
                 medicine.quantity.toString()
             ]),
-            startY: 40
+            startY: 40 // Start below the last line of text
         });
     
-        // Generate the file name
         const fileName = `Medicine-Order-${orderDate}-${vendorName.replace(/\s+/g, '_')}.pdf`;
-    
-        // Save the PDF with the generated file name
         doc.save(fileName);
     }
+    
+    
     
 }
 
