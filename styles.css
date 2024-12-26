@@ -113,11 +113,50 @@ th {
     left: 0;
     right: 0;
     background: white;
-    padding: 1rem;
+    padding: 8px;
     box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 4px;
+}
+
+.action-buttons button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    color: var(--text-dark);
+    padding: 8px 4px;
+    font-size: 12px;
+    border-radius: 0;
+    flex: 1;
+    max-width: 80px;
+}
+
+.action-buttons button:before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#previewBtn:before { content: '👁️'; }
+#printBtn:before { content: '🖨️'; }
+#whatsappBtn:before { content: '📱'; }
+#pdfBtn:before { content: '📄'; }
+
+.action-buttons button:disabled {
+    opacity: 0.5;
+    color: var(--border-color);
+}
+
+/* Adjust container bottom margin */
+.container {
+    margin-bottom: 70px;
 }
 
 button {

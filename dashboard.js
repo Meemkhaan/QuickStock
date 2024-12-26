@@ -229,47 +229,64 @@ class MedicineOrderSystem {
     }
 
     printOrder() {
-        const printContent = document.createElement('div');
-        printContent.classList.add('print-only');
-        
+        // Create a new window for print
+        const printWindow = window.open('', '_blank');
         const vendorName = document.getElementById('vendorSelect').selectedOptions[0].text;
         
-        printContent.innerHTML = `
-            <div class="print-header">
+        // Build print content
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Medicine Order</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    h2 { margin-bottom: 10px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                    th { background: #f4f4f4; }
+                    @media print {
+                        @page { margin: 0.5cm; }
+                    }
+                    @media screen and (max-width: 480px) {
+                        body { padding: 10px; }
+                        th, td { padding: 6px; font-size: 14px; }
+                    }
+                </style>
+            </head>
+            <body>
                 <h2>Medicine Order Summary</h2>
-                <p>Vendor: ${vendorName}</p>
-                <p>Date: ${new Date().toLocaleDateString()}</p>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Medicine</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${this.selectedMedicines.map(medicine => `
+                <p><strong>Vendor:</strong> ${vendorName}</p>
+                <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                <table>
+                    <thead>
                         <tr>
-                            <td>${medicine.name}</td>
-                            <td>${medicine.quantity}</td>
+                            <th>Medicine</th>
+                            <th>Quantity</th>
                         </tr>
-                    `).join('')}
-                </tbody>
-            </table>
-        `;
-
-        // Hide all existing content
-        const mainContent = document.querySelector('.container');
-        const originalDisplay = mainContent.style.display;
-        mainContent.style.display = 'none';
-
-        // Add print content
-        document.body.appendChild(printContent);
-        window.print();
-
-        // Cleanup
-        document.body.removeChild(printContent);
-        mainContent.style.display = originalDisplay;
+                    </thead>
+                    <tbody>
+                        ${this.selectedMedicines.map(medicine => `
+                            <tr>
+                                <td>${medicine.name}</td>
+                                <td>${medicine.quantity}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </body>
+            </html>
+        `);
+        
+        printWindow.document.close();
+        printWindow.focus();
+        
+        // Wait for content to load then print
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 250);
     }
 
     sendWhatsApp() {
@@ -313,7 +330,7 @@ class MedicineOrderSystem {
         doc.text('Medicine Order', 20, 20);
         const vendorName = document.getElementById('vendorSelect').selectedOptions[0].text;
         doc.text(`Vendor: ${vendorName}`, 20, 30);
-        doc.text(`Vendor: ${orderDate}`, 20, 40);
+        doc.text(`Order Date: ${orderDate}`, 20, 40);
 
     
         doc.autoTable({
