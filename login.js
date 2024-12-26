@@ -29,6 +29,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         // alert("Login successful!");
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", username);
+        localStorage.setItem("BusinessName", BusinessName);
         window.location.href = "dashboard.html"; // Redirect to a dashboard or another page
     } else {
         const alertMessage = document.getElementById("alertMessage");

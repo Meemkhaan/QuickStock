@@ -217,7 +217,7 @@ class MedicineOrderSystem {
 
     generateOrderSummary(includeDate = false) {
         const date = new Date().toLocaleDateString();
-        const headerLine = includeDate ? `Order Date: ${date}\n\n` : '';
+        const headerLine = includeDate ? `Order Date: ${date} By: \n\n` : '';
         return headerLine + this.selectedMedicines.map(medicine =>
             `${medicine.name}: ${medicine.quantity}`
         ).join('\n');
@@ -232,6 +232,7 @@ class MedicineOrderSystem {
         // Create a new window for print
         const printWindow = window.open('', '_blank');
         const vendorName = document.getElementById('vendorSelect').selectedOptions[0].text;
+        const OwnerName = "Bismillah Medical Store";
         
         // Build print content
         printWindow.document.write(`
@@ -257,6 +258,7 @@ class MedicineOrderSystem {
             </head>
             <body>
                 <h2>Medicine Order Summary</h2>
+                <p><strong>From:</strong> ${OwnerName}</p>
                 <p><strong>Vendor:</strong> ${vendorName}</p>
                 <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
                 <table>
