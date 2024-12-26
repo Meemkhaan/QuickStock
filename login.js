@@ -25,15 +25,16 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
     const users = await fetchUsers();
 
-    if (users[username] && users[username] === password) {
-        // alert("Login successful!");
+    if (users[username] && users[username].password === password) {
+        // Store login information in localStorage
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", username);
         localStorage.setItem("businessName", users[username].businessName); // Store BusinessName
-        window.location.href = "dashboard.html"; // Redirect to a dashboard or another page
+        window.location.href = "dashboard.html"; // Redirect to dashboard
     } else {
         const alertMessage = document.getElementById("alertMessage");
         alertMessage.style.display = "block";
         alertMessage.textContent = "Invalid login credentials";
     }
 });
+
