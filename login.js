@@ -5,9 +5,9 @@ async function fetchUsers() {
         const response = await fetch(SHEET_URL);
         const data = await response.json();
         // Convert to key-value pairs
-        return data.reduce((users, [username, password]) => {
-            if (username && password) {
-                users[username] = password;
+        return data.reduce((users, [username, password, businessName]) => {
+            if (username && password && businessName) {
+                users[username] = { password, businessName };
             }
             return users;
         }, {});
@@ -29,7 +29,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         // alert("Login successful!");
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", username);
-        localStorage.setItem("BusinessName", BusinessName);
+        localStorage.setItem("businessName", users[username].businessName); // Store BusinessName
         window.location.href = "dashboard.html"; // Redirect to a dashboard or another page
     } else {
         const alertMessage = document.getElementById("alertMessage");

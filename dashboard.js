@@ -1,9 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (!isLoggedIn) {
+    const username = localStorage.getItem("username");
+    const businessName = localStorage.getItem("businessName");
+
+    if (!isLoggedIn || !username || !businessName) {
         alert("You must log in first!");
         window.location.href = "index.html";
+        return;
     }
+        // Display user information
+        document.getElementById("welcomeMessage").textContent = `Welcome, ${businessName}!`;
 });
 
 document.getElementById("logoutButton").addEventListener("click", () => {
