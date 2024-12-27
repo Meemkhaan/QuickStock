@@ -110,13 +110,16 @@ class MedicineOrderSystem {
     }
 
     async loadMedicines() {
-        const vendorId = localStorage.getItem('currentVendor') || document.getElementById('vendorSelect').value;
-        document.getElementById('vendorSelect').value = vendorId;
+        const vendorSelect = document.getElementById('vendorSelect');
+        const vendorId = vendorSelect.value;
     
+        // Show or hide the search container based on vendor selection
         document.getElementById('searchContainer').style.display = vendorId ? 'block' : 'none';
     
+        // Reset state if no vendor is selected
         if (!vendorId) {
             this.currentVendor = null;
+            this.filteredMedicines = [];
             this.selectedMedicines = [];
             this.renderSelectedMedicines();
             this.updateActionButtons();
@@ -124,24 +127,29 @@ class MedicineOrderSystem {
             return;
         }
     
-        localStorage.setItem('currentVendor', vendorId); // Save vendor selection
-    
         try {
             this.setLoading(true);
+    
+            // Fetch data and filter based on selected vendor ID
             const data = await this.fetchData('Medicines');
-            this.filteredMedicines = data.slice(1)
-                .filter(row => row[1] === vendorId)
+            this.filteredMedicines = data.slice(1) // Skip the header row
+                .filter(row => row[1].toString() === vendorId.toString()) // Ensure IDs match as strings
                 .map(([id, vendorId, name]) => ({ id, name }));
     
-            document.getElementById('medicineError').style.display =
+            // Display an error if no medicines are available
+            document.getElementById('medicineError').style.display = 
                 this.filteredMedicines.length === 0 ? 'block' : 'none';
+    
+            // Render medicines for the selected vendor
             this.renderMedicines();
         } catch (error) {
+            console.error('Error loading medicines:', error);
             this.renderMedicines([]);
         } finally {
             this.setLoading(false);
         }
     }
+    
     
 
     searchMedicines(query) {
