@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Medicine Report</title>
+    <style>
+    :root {
+        --primary-color: #173C96;
+        --primary-hover: #031B4E;
+        --accent-color: #EB006F;
+        --border-color: #ddd;
+        --error-color: #EB006F;
+        --bg-gray: #f4f4f4;
+        --text-dark: #333;
+        --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        --header-height: 60px;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f9f9f9;
+        color: var(--text-dark);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .header {
+        background-color: var(--primary-color);
+        color: white;
+        height: var(--header-height);
+        padding: 0 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        box-shadow: var(--shadow);
+    }
+
+    .container {
+        margin-top: calc(var(--header-height) + 20px);
+        padding: 0 1rem;
+        margin-bottom: 70px;
+    }
+
+    .vendor-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+        margin: 1rem 0;
+    }
+
+    .vendor-card {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1rem;
+        cursor: pointer;
+        box-shadow: var(--shadow);
+        transition: transform 0.3s;
+    }
+
+    .vendor-card:hover {
+        transform: translateY(-2px);
+        background: var(--bg-gray);
+    }
+
+    .vendor-name {
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .vendor-contact {
+        font-size: 0.9rem;
+        color: var(--text-dark);
+    }
+
+    .medicines-container {
+        display: none;
+    }
+
+    .medicines-container.active {
+        display: block;
+    }
+
+    .pharma-section {
+        background: white;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    .pharma-company-header {
+        background-color: var(--bg-gray);
+        text-align: left;
+        padding: 1rem;
+        font-weight: 600;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    table {
+        width: 100%;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        margin: 0;
+    }
+
+    th, td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+        background: var(--bg-gray);
+        font-weight: 600;
+    }
+
+    .back-button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 14px;
+        margin: 1rem 0;
+        display: none;
+    }
+
+    .back-button:hover {
+        background-color: var(--primary-hover);
+    }
+
+    @media (max-width: 480px) {
+        .header h1 {
+            font-size: 1.2rem;
+        }
+        
+        th, td {
+            padding: 0.8rem;
+            font-size: 0.9rem;
+        }
+        
+        .vendor-list {
+            grid-template-columns: 1fr;
+        }
+    }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Vendor Medicine Report</h1>
+    </header>
+
+    <div class="container">
+        <div id="vendorList" class="vendor-list">
+            <!-- Vendors will be listed here -->
+        </div>
+
+        <button id="backButton" class="back-button">← Back to Vendors</button>
+        
+        <div id="medicinesContainer" class="medicines-container">
+            <h2 id="selectedVendorTitle"></h2>
+            <div id="medicinesByPharma">
+                <!-- Medicines will be shown here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SHEET_ID = '1FQg-uoP3eJ3E5NhWAn3k_gJfF0TOm4yyp3955T7UlVY';
+        const API_KEY = 'AIzaSyAoUbq6tei8kxKILLvXWQO9hT2DmVUK7xU';
+
+        let vendors = [];
+        let medicines = [];
+
+        async function fetchSheetData(range) {
+            try {
+                const response = await fetch(
+                    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`
+                );
+                const data = await response.json();
+                return data.values || [];
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return [];
+            }
+        }
+
+        async function loadData() {
+            const vendorData = await fetchSheetData('Vendors!A1:C');
+            vendors = vendorData.slice(1).map(([id, name, whatsapp]) => ({ id, name, whatsapp }));
+
+            const medicineData = await fetchSheetData('Medicines!A1:D');
+            medicines = medicineData.slice(1).map(([id, vendorId, name, pharmaCompany]) => ({
+                id, vendorId, name, pharmaCompany: pharmaCompany || 'Unspecified'
+            }));
+
+            renderVendorList();
+        }
+
+        function renderVendorList() {
+            const vendorList = document.getElementById('vendorList');
+            vendorList.innerHTML = vendors.map(vendor => `
+                <div class="vendor-card" onclick="showVendorMedicines('${vendor.id}')">
+                    <div class="vendor-name">${vendor.name}</div>
+                    <div class="vendor-contact">${vendor.whatsapp || 'No contact info'}</div>
+                </div>
+            `).join('');
+        }
+
+        function showVendorMedicines(vendorId) {
+            const vendor = vendors.find(v => v.id === vendorId);
+            const vendorMedicines = medicines.filter(m => m.vendorId === vendorId);
+            
+            const groupedMedicines = vendorMedicines.reduce((acc, medicine) => {
+                if (!acc[medicine.pharmaCompany]) {
+                    acc[medicine.pharmaCompany] = [];
+                }
+                acc[medicine.pharmaCompany].push(medicine);
+                return acc;
+            }, {});
+
+            document.getElementById('vendorList').style.display = 'none';
+            document.getElementById('backButton').style.display = 'block';
+            document.getElementById('selectedVendorTitle').textContent = vendor.name;
+            const medicinesContainer = document.getElementById('medicinesContainer');
+            medicinesContainer.classList.add('active');
+
+            document.getElementById('medicinesByPharma').innerHTML = Object.entries(groupedMedicines)
+                .sort(([a], [b]) => a.localeCompare(b))
+                .map(([pharmaCompany, medicines]) => `
+                    <div class="pharma-section">
+                        <div class="pharma-company-header">${pharmaCompany}</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Medicine Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${medicines.map(medicine => `
+                                    <tr class="medicine-row">
+                                        <td>${medicine.name}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `).join('');
+        }
+
+        function backToVendors() {
+            document.getElementById('vendorList').style.display = 'grid';
+            document.getElementById('backButton').style.display = 'none';
+            document.getElementById('medicinesContainer').classList.remove('active');
+        }
+
+        document.getElementById('backButton').addEventListener('click', backToVendors);
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
