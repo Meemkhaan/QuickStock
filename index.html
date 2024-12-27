@@ -15,10 +15,20 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: linear-gradient(135deg, #173C96, #031B4E);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             color: #031B4E;
+            padding: 20px;
+        }
+
+        .app-name {
+            color: white;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .login-container {
@@ -129,15 +139,44 @@
             text-decoration: underline;
         }
 
+        .developer-signature {
+            margin-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .developer-signature a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .developer-signature a:hover {
+            opacity: 0.8;
+        }
+
         @media (max-width: 480px) {
+            .app-name {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
             .login-container {
-                margin: 1rem;
+                margin: 0;
                 padding: 1.5rem;
+            }
+
+            .developer-signature {
+                margin-top: 1.5rem;
+                font-size: 0.8rem;
             }
         }
     </style>
 </head>
 <body>
+    <h1 class="app-name">QuickStock</h1>
     <div class="login-container">
         <h1>Welcome Back</h1>
         <form id="loginForm">
@@ -155,6 +194,10 @@
             <button type="submit">Sign In</button>
         </form>
         <div class="alert" id="alertMessage">Invalid login credentials</div>
+    </div>
+    <div class="developer-signature">
+        Developed with ❤️ by <a href="https://meemkhan.portfoliobox.net/" target="_blank">MukthtiYar Khan</a><br>
+        © 2024 QuickStock. All rights reserved.
     </div>
 
     <script src="login.js"></script>
