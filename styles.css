@@ -1,13 +1,15 @@
 :root {
-    --primary-color: #4CAF50;
-    --primary-hover: #45a049;
+    --primary-color: #173C96; /* Main Blue */
+    --primary-hover: #031B4E; /* Darker Blue */
+    --accent-color: #EB006F; /* Pink Accent */
     --border-color: #ddd;
-    --error-color: #ff4444;
+    --error-color: #EB006F;
     --bg-gray: #f4f4f4;
     --text-dark: #333;
-    --shadow: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     --header-height: 60px;
 }
+
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -40,15 +42,16 @@ body {
 }
 
 .logout-btn {
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(255, 255, 255, 0.2);
     color: white;
-    border: 1px solid rgba(255,255,255,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     padding: 8px 16px;
     border-radius: 20px;
     font-weight: 500;
 }
 
-.vendor-selection, .search-container {
+.vendor-selection,
+.search-container {
     background: white;
     padding: 1rem;
     border-radius: 8px;
@@ -56,14 +59,16 @@ body {
     box-shadow: var(--shadow);
 }
 
-select, input {
-    width: 100%;
+select,
+input {
+    width: 75%;
     padding: 12px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 16px;
     margin-top: 0.5rem;
 }
+
 
 table {
     width: 100%;
@@ -179,12 +184,16 @@ button {
     font-size: 14px;
 }
 
+button:hover {
+    background-color: var(--primary-hover);
+}
+
 button:disabled {
     opacity: 0.6;
 }
 
 .error-message {
-    background: #ffe6e6;
+    background: rgba(235, 0, 111, 0.1);
     color: var(--error-color);
     padding: 0.8rem;
     border-radius: 8px;
@@ -193,8 +202,12 @@ button:disabled {
 
 /* Print styles */
 @media print {
-    .no-print { display: none; }
-    .print-only { display: block !important; }
+    .no-print {
+        display: none;
+    }
+    .print-only {
+        display: block !important;
+    }
     .print-header {
         text-align: center;
         margin-bottom: 2rem;
@@ -215,4 +228,19 @@ button:disabled {
     .action-buttons {
         grid-template-columns: 1fr;
     }
+}
+
+
+.pharma-company-header {
+    background-color: #f0f0f0;
+    text-align: left;
+    padding: 8px;
+}
+
+.company-row td {
+    border-top: 2px solid #ccc;
+}
+
+.medicine-row td {
+    padding: 5px;
 }

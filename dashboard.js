@@ -134,13 +134,27 @@ class MedicineOrderSystem {
             const data = await this.fetchData('Medicines');
             this.filteredMedicines = data.slice(1) // Skip the header row
                 .filter(row => row[1].toString() === vendorId.toString()) // Ensure IDs match as strings
-                .map(([id, vendorId, name]) => ({ id, name }));
+                .map(([id, vendorId, name, pharmaCompany]) => ({
+                    id,
+                    name,
+                    pharmaCompany
+                }));
+    
+            // Group medicines by pharma company
+            this.groupedMedicines = this.filteredMedicines.reduce((groups, medicine) => {
+                const { pharmaCompany } = medicine;
+                if (!groups[pharmaCompany]) {
+                    groups[pharmaCompany] = [];
+                }
+                groups[pharmaCompany].push(medicine);
+                return groups;
+            }, {});
     
             // Display an error if no medicines are available
             document.getElementById('medicineError').style.display = 
                 this.filteredMedicines.length === 0 ? 'block' : 'none';
     
-            // Render medicines for the selected vendor
+            // Render medicines grouped by pharma company
             this.renderMedicines();
         } catch (error) {
             console.error('Error loading medicines:', error);
@@ -149,7 +163,8 @@ class MedicineOrderSystem {
             this.setLoading(false);
         }
     }
-    
+ 
+
     
 
     searchMedicines(query) {
@@ -168,53 +183,61 @@ class MedicineOrderSystem {
             ).join('');
     }
 
-    renderMedicines(medicines = this.filteredMedicines) {
-        this.displayedMedicines = medicines;
+    renderMedicines(groupedMedicines = this.groupedMedicines) {
         const medicineTable = document.getElementById('medicineTable');
-        medicineTable.innerHTML = medicines.map((medicine, index) => `
-            <tr>
-                <td>${medicine.name}</td>
-                <td>
-                    <input type="number" min="1" id="qty-${index}" 
-                           class="quantity-input" placeholder="Quantity">
-                </td>
-                <td>
-                    <button onclick="medicineSystem.addMedicine(${index})">Add</button>
+        this.displayedMedicines = Object.values(groupedMedicines).flat(); // Flatten grouped data
+        medicineTable.innerHTML = Object.entries(groupedMedicines).map(([company, medicines]) => `
+            <tr class="company-row">
+                <td colspan="3" class="pharma-company-header">
+                    <strong>${company}</strong>
                 </td>
             </tr>
+            ${medicines.map(medicine => `
+                <tr class="medicine-row">
+                    <td>${medicine.name}</td>
+                    <td>
+                        <input type="number" min="1" id="qty-${medicine.id}" 
+                               class="quantity-input" placeholder="Quantity">
+                    </td>
+                    <td>
+                        <button onclick="medicineSystem.addMedicine('${medicine.id}')">Add</button>
+                    </td>
+                </tr>
+            `).join('')}
         `).join('');
     }
     
+    
+    
 
-    addMedicine(index) {
-        const qtyInput = document.getElementById(`qty-${index}`);
-        const quantity = parseInt(qtyInput.value);
+    addMedicine(medicineId) {
+        const qtyInput = document.getElementById(`qty-${medicineId}`);
+        const quantity = parseInt(qtyInput?.value, 10);
     
         if (!quantity || quantity < 1) {
             alert('Please enter a valid quantity');
             return;
         }
     
-        const filteredMedicine = this.displayedMedicines[index];
-        const existing = this.selectedMedicines.find(item => item.id === filteredMedicine.id);
+        const medicine = this.displayedMedicines.find(med => med.id === medicineId);
+        if (!medicine) {
+            alert('Medicine not found');
+            return;
+        }
     
+        const existing = this.selectedMedicines.find(item => item.id === medicineId);
         if (existing) {
             existing.quantity += quantity;
         } else {
-            this.selectedMedicines.push({ ...filteredMedicine, quantity });
+            this.selectedMedicines.push({ ...medicine, quantity });
         }
     
-        // Clear the quantity input and search box
+        // Clear input and re-render
         qtyInput.value = '';
-        document.getElementById('medicineSearch').value = '';
-    
-        // Reload the full list of medicines
-        this.renderMedicines();
-    
-        // Update the selected medicines list
         this.renderSelectedMedicines();
         this.updateActionButtons();
     }
+    
     
     
 
@@ -396,6 +419,12 @@ class MedicineOrderSystem {
 }
 
 const medicineSystem = new MedicineOrderSystem();
+
+
+console.log('Adding medicine:', medicineId);
+console.log('Displayed medicines:', this.displayedMedicines);
+console.log('Selected medicines:', this.selectedMedicines);
+
 
 function previewOrder() { medicineSystem.previewOrder(); }
 function printOrder() { medicineSystem.printOrder(); }
