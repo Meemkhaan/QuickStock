@@ -164,16 +164,8 @@ class MedicineOrderSystem {
         }
     }
  
-
+   
     
-
-    searchMedicines(query) {
-        const searchTerm = query.toLowerCase();
-        const filtered = this.filteredMedicines.filter(medicine =>
-            medicine.name.toLowerCase().includes(searchTerm)
-        );
-        this.renderMedicines(filtered);
-    }
 
     populateVendorSelect() {
         const select = document.getElementById('vendorSelect');
@@ -183,10 +175,30 @@ class MedicineOrderSystem {
             ).join('');
     }
 
-    renderMedicines(groupedMedicines = this.groupedMedicines) {
+    renderMedicines(medicines = this.groupedMedicines) {
         const medicineTable = document.getElementById('medicineTable');
-        this.displayedMedicines = Object.values(groupedMedicines).flat(); // Flatten grouped data
-        medicineTable.innerHTML = Object.entries(groupedMedicines).map(([company, medicines]) => `
+    
+        // If a flat list is passed, render as is
+        if (Array.isArray(medicines)) {
+            this.displayedMedicines = medicines; // Update the displayed medicines
+            medicineTable.innerHTML = medicines.map(medicine => `
+                <tr class="medicine-row">
+                    <td>${medicine.name}</td>
+                    <td>
+                        <input type="number" min="1" id="qty-${medicine.id}" 
+                               class="quantity-input" placeholder="Quantity">
+                    </td>
+                    <td>
+                        <button onclick="medicineSystem.addMedicine('${medicine.id}')">Add</button>
+                    </td>
+                </tr>
+            `).join('');
+            return;
+        }
+    
+        // Grouped medicines rendering
+        this.displayedMedicines = Object.values(medicines).flat(); // Flatten grouped data
+        medicineTable.innerHTML = Object.entries(medicines).map(([company, medicines]) => `
             <tr class="company-row">
                 <td colspan="3" class="pharma-company-header">
                     <strong>${company}</strong>
@@ -209,7 +221,6 @@ class MedicineOrderSystem {
     
     
     
-
     addMedicine(medicineId) {
         const qtyInput = document.getElementById(`qty-${medicineId}`);
         const quantity = parseInt(qtyInput?.value, 10);
@@ -232,10 +243,35 @@ class MedicineOrderSystem {
             this.selectedMedicines.push({ ...medicine, quantity });
         }
     
-        // Clear input and re-render
+        // Clear input, search box, and re-render medicines
         qtyInput.value = '';
+        document.getElementById('medicineSearch').value = ''; // Clear the search box
+        this.renderMedicines(); // Display the full list of medicines
         this.renderSelectedMedicines();
         this.updateActionButtons();
+    }
+    
+    searchMedicines(query) {
+        const searchTerm = query.toLowerCase();
+        if (searchTerm) {
+            const filtered = this.filteredMedicines.filter(medicine =>
+                medicine.name.toLowerCase().includes(searchTerm)
+            );
+            this.renderMedicines(this.groupMedicinesByPharmaCompany(filtered));
+        } else {
+            this.renderMedicines(this.groupedMedicines); // Show the full list if no query
+        }
+    }
+    
+    groupMedicinesByPharmaCompany(medicines) {
+        return medicines.reduce((groups, medicine) => {
+            const { pharmaCompany } = medicine;
+            if (!groups[pharmaCompany]) {
+                groups[pharmaCompany] = [];
+            }
+            groups[pharmaCompany].push(medicine);
+            return groups;
+        }, {});
     }
     
     
