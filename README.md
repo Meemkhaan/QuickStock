@@ -2,14 +2,14 @@
   
 # 🚀 QuickStock
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Meemkhaan/quickstock/blob/main/LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://github.com/Meemkhaan/quickstock)
-[![Status](https://img.shields.io/badge/status-beta-orange.svg)](https://github.com/Meemkhaan/quickstock)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Meemkhaan/QuickStock/blob/main/LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://github.com/Meemkhaan/QuickStock)
+[![Status](https://img.shields.io/badge/status-beta-orange.svg)](https://github.com/Meemkhaan/QuickStock)
 
 ### 📦 Streamline Your Inventory Management
 *A modern solution for pharmacy and small business restocking automation*
 
-[Live Demo](https://meemkhaan.github.io/quickstock/index.html) • [Report Bug](https://github.com/Meemkhaan/quickstock/issues) • [Request Feature](https://github.com/Meemkhaan/quickstock/issues)
+[Live Demo](https://meemkhaan.github.io/QuickStock/index.html) • [Report Bug](https://github.com/Meemkhaan/QuickStock/issues) • [Request Feature](https://github.com/Meemkhaan/QuickStock/issues)
 
 ![QuickStock Demo](path-to-your-demo-image.gif)
 
@@ -57,7 +57,7 @@ QuickStock revolutionizes the restocking process for pharmacies and small busine
 
 1. **Access the Application**
    ```
-   https://meemkhaan.github.io/quickstock/index.html
+   https://meemkhaan.github.io/QuickStock/index.html
    ```
 
 2. **Login Credentials**
@@ -148,7 +148,7 @@ Mukhtiyar Khan - [Portfolio](https://meemkhan.portfoliobox.net/)
 
 *Click the button above to start a chat*
 
-Project Link: [https://github.com/yourusername/quickstock](https://github.com/Meemkhaan/quickstock)
+Project Link: [https://github.com/yourusername/quickstock](https://github.com/Meemkhaan/QuickStock)
 
 ---
 
