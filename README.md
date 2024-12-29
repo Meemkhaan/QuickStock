@@ -2,14 +2,14 @@
   
 # 🚀 QuickStock
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/yourusername/quickstock/blob/main/LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://github.com/yourusername/quickstock)
-[![Status](https://img.shields.io/badge/status-beta-orange.svg)](https://github.com/yourusername/quickstock)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Meemkhaan/quickstock/blob/main/LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://github.com/Meemkhaan/quickstock)
+[![Status](https://img.shields.io/badge/status-beta-orange.svg)](https://github.com/Meemkhaan/quickstock)
 
 ### 📦 Streamline Your Inventory Management
 *A modern solution for pharmacy and small business restocking automation*
 
-[Live Demo](https://meemkhaan.github.io/medical-order-system/index.html) • [Report Bug](https://github.com/yourusername/quickstock/issues) • [Request Feature](https://github.com/yourusername/quickstock/issues)
+[Live Demo](https://meemkhaan.github.io/quickstock/index.html) • [Report Bug](https://github.com/Meemkhaan/quickstock/issues) • [Request Feature](https://github.com/Meemkhaan/quickstock/issues)
 
 ![QuickStock Demo](path-to-your-demo-image.gif)
 
@@ -57,7 +57,7 @@ QuickStock revolutionizes the restocking process for pharmacies and small busine
 
 1. **Access the Application**
    ```
-   https://meemkhaan.github.io/medical-order-system/index.html
+   https://meemkhaan.github.io/quickstock/index.html
    ```
 
 2. **Login Credentials**
@@ -142,7 +142,13 @@ We welcome contributions to improve QuickStock! Please follow these steps:
 
 Mukhtiyar Khan - [Portfolio](https://meemkhan.portfoliobox.net/)
 
-Project Link: [https://github.com/yourusername/quickstock](https://github.com/yourusername/quickstock)
+## 📱 Contact via WhatsApp
+
+[![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/923422251896)
+
+*Click the button above to start a chat*
+
+Project Link: [https://github.com/yourusername/quickstock](https://github.com/Meemkhaan/quickstock)
 
 ---
 
