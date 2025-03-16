@@ -1,1 +1,468 @@
-const _0x2ac43e=_0x552f;(function(_0x2c49c5,_0x4b42e5){const _0x5b3620=_0x552f,_0x45f5b5=_0x2c49c5();while(!![]){try{const _0x51b9ec=-parseInt(_0x5b3620(0x1ae))/0x1+-parseInt(_0x5b3620(0x158))/0x2*(-parseInt(_0x5b3620(0x188))/0x3)+parseInt(_0x5b3620(0x143))/0x4+parseInt(_0x5b3620(0x17b))/0x5*(-parseInt(_0x5b3620(0x18a))/0x6)+parseInt(_0x5b3620(0x197))/0x7+-parseInt(_0x5b3620(0x138))/0x8+parseInt(_0x5b3620(0x1c3))/0x9;if(_0x51b9ec===_0x4b42e5)break;else _0x45f5b5['push'](_0x45f5b5['shift']());}catch(_0x6d0545){_0x45f5b5['push'](_0x45f5b5['shift']());}}}(_0x2a44,0xcf554),document[_0x2ac43e(0x166)](_0x2ac43e(0x17c),()=>{const _0x5e1f88=_0x2ac43e,_0x4333a2=localStorage[_0x5e1f88(0x1b2)](_0x5e1f88(0x1d0)),_0x20ea80=localStorage['getItem'](_0x5e1f88(0x194)),_0x5667b2=localStorage[_0x5e1f88(0x1b2)]('businessName');if(!_0x4333a2||!_0x20ea80||!_0x5667b2){alert(_0x5e1f88(0x15e)),window[_0x5e1f88(0x1a6)][_0x5e1f88(0x1ab)]=_0x5e1f88(0x192);return;}document[_0x5e1f88(0x133)]('welcomeMessage')['textContent']=_0x5e1f88(0x1cb)+_0x5667b2+'!';}),document[_0x2ac43e(0x133)](_0x2ac43e(0x181))[_0x2ac43e(0x166)]('click',()=>{const _0x543c73=_0x2ac43e;localStorage[_0x543c73(0x16d)](_0x543c73(0x1d0)),localStorage[_0x543c73(0x16d)](_0x543c73(0x194)),alert(_0x543c73(0x155)),window[_0x543c73(0x1a6)][_0x543c73(0x1ab)]='index.html';}),document[_0x2ac43e(0x133)]('scrollToSelected')[_0x2ac43e(0x166)](_0x2ac43e(0x145),()=>{const _0x3d3e69=_0x2ac43e,_0x409f94=document[_0x3d3e69(0x133)](_0x3d3e69(0x13a));_0x409f94?_0x409f94[_0x3d3e69(0x13d)]({'behavior':_0x3d3e69(0x153),'block':'start'}):console[_0x3d3e69(0x1b8)](_0x3d3e69(0x19d));}));function _0x552f(_0x23f08c,_0x8ad0db){const _0x2a4434=_0x2a44();return _0x552f=function(_0x552f5e,_0x30c358){_0x552f5e=_0x552f5e-0x133;let _0x452234=_0x2a4434[_0x552f5e];return _0x452234;},_0x552f(_0x23f08c,_0x8ad0db);}const SHEET_ID=_0x2ac43e(0x167),API_KEY=_0x2ac43e(0x1bb);function _0x2a44(){const _0x3c1231=['Unknown\x20Owner','1508436EqtPhe','slice','click','vendorSelect','fetchData','printOrder','selectedMedicinesTable','close','sendWhatsApp','Failed\x20to\x20load\x20','init','\x0a\x20\x20\x20\x20\x20\x20\x20\x20','</option>','groupedMedicines','loading','block','smooth','toggle','You\x20have\x20been\x20logged\x20out.','HTTP\x20error!\x20status:\x20','includes','1213048bZoEFp','createElement','From:\x20','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','_blank','previewBtn','You\x20must\x20log\x20in\x20first!','previewOrder','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','clearSelectedMedicines','document','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22medicineSystem.removeMedicine(','toString','en-GB','addEventListener','1FQg-uoP3eJ3E5NhWAn3k_gJfF0TOm4yyp3955T7UlVY','https://sheets.googleapis.com/v4/spreadsheets/','Order\x20Preview:\x0a\x0a','displayedMedicines','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<!DOCTYPE\x20html>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<html>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<head>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<title>Medicine\x20Order</title>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<meta\x20name=\x22viewport\x22\x20content=\x22width=device-width,\x20initial-scale=1.0\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<style>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20body\x20{\x20font-family:\x20Arial,\x20sans-serif;\x20padding:\x2020px;\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20h2\x20{\x20margin-bottom:\x2010px;\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20table\x20{\x20width:\x20100%;\x20border-collapse:\x20collapse;\x20margin-top:\x2020px;\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20th,\x20td\x20{\x20border:\x201px\x20solid\x20#ddd;\x20padding:\x208px;\x20text-align:\x20left;\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20th\x20{\x20background:\x20#f4f4f4;\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20@media\x20print\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20@page\x20{\x20margin:\x200.5cm;\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20@media\x20screen\x20and\x20(max-width:\x20480px)\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20body\x20{\x20padding:\x2010px;\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20th,\x20td\x20{\x20padding:\x206px;\x20font-size:\x2014px;\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</style>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</head>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<body>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h2>Medicine\x20Order\x20Summary</h2>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>From:</strong>\x20','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20type=\x22number\x22\x20min=\x221\x22\x20id=\x22qty-','removeItem','display','Displayed\x20medicines:','?text=','status','flat','setFontSize','isArray','join','printBtn','currentVendor','medicineTable','log','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<table>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<thead>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th>Medicine</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th>Quantity</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</thead>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','4042365APWwez','DOMContentLoaded','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20class=\x22medicine-row\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','generateOrderSummary','classList','push','logoutButton','medicineSearch','searchContainer','setLoading','reduce','json','Failed\x20to\x20open\x20WhatsApp.\x20Please\x20try\x20again.','3dUEshB','Order\x20Date:\x20','12LLtIAS','updateActionButtons','innerHTML','medicineError','body','length','\x20has\x20placed\x20a\x20new\x20medicine\x20order:\x0a','searchMedicines','index.html','toLowerCase','username','groupMedicinesByPharmaCompany','values','680204CWHNFu','className','.pdf','populateVendorSelect','<option\x20value=\x22','disabled','Selected\x20Medicines\x20section\x20not\x20found.','</strong>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','quantity','filteredMedicines','Error\x20opening\x20WhatsApp:','Invalid\x20WhatsApp\x20number.','filter','Vendors','renderMedicines','location','Error\x20loading\x20medicines:','Changing\x20the\x20vendor\x20will\x20clear\x20the\x20selected\x20medicines.\x20Do\x20you\x20want\x20to\x20continue?','Quantity','removeMedicine','href','style','Medicine','561160sLaDFP','map','find','renderSelectedMedicines','getItem','<option\x20value=\x22\x22>--\x20Select\x20Vendor\x20--</option>','name','Medicines','Adding\x20medicine:','loadMedicines','error','replace','isLoading','AIzaSyAoUbq6tei8kxKILLvXWQO9hT2DmVUK7xU','vendors','toLocaleDateString','showError','input','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','entries','qty-','25191117MTPsSk','businessName','div','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','whatsapp','jspdf','loadVendors','selectedMedicines','Welcome,\x20','remove','error-message','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Date:</strong>\x20','generatePDF','isLoggedIn','save','\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20class=\x22quantity-input\x22\x20placeholder=\x22Quantity\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22medicineSystem.addMedicine(\x27','setupEventListeners','pdfBtn','getElementById','value','Medicine\x20not\x20found','querySelector','No\x20data\x20received\x20from\x20the\x20API','6819808UMnGHP','none','selected-medicines-section','\x27)\x22>Add</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','open','scrollIntoView','text','forEach','selectedOptions','addMedicine'];_0x2a44=function(){return _0x3c1231;};return _0x2a44();}class MedicineOrderSystem{constructor(){const _0x3c98d6=_0x2ac43e;this[_0x3c98d6(0x1bc)]=[],this[_0x3c98d6(0x177)]=null,this[_0x3c98d6(0x1a0)]=[],this[_0x3c98d6(0x1ca)]=[],this[_0x3c98d6(0x1ba)]=![],this[_0x3c98d6(0x14d)]();}async[_0x2ac43e(0x14d)](){const _0xf2f33d=_0x2ac43e;this[_0xf2f33d(0x1d3)](),await this['loadVendors']();}['setupEventListeners'](){const _0x5d5aa8=_0x2ac43e;document[_0x5d5aa8(0x133)](_0x5d5aa8(0x146))['addEventListener']('change',()=>{const _0x16c395=_0x5d5aa8;if(this[_0x16c395(0x1ca)]['length']>0x0){const _0xd4361a=confirm(_0x16c395(0x1a8));if(!_0xd4361a){document[_0x16c395(0x133)](_0x16c395(0x146))['value']=this[_0x16c395(0x177)]?.['id']||'';return;}}this[_0x16c395(0x161)](),this[_0x16c395(0x1b7)]();}),document['getElementById']('medicineSearch')[_0x5d5aa8(0x166)](_0x5d5aa8(0x1bf),_0x3d290b=>this[_0x5d5aa8(0x191)](_0x3d290b['target'][_0x5d5aa8(0x134)]));}async[_0x2ac43e(0x147)](_0x21c410){const _0x112887=_0x2ac43e;try{const _0x47ddf2=await fetch(_0x112887(0x168)+SHEET_ID+'/values/'+_0x21c410+'?key='+API_KEY);if(!_0x47ddf2['ok'])throw new Error(_0x112887(0x156)+_0x47ddf2[_0x112887(0x171)]);const _0x5c803f=await _0x47ddf2[_0x112887(0x186)]();if(!_0x5c803f['values'])throw new Error(_0x112887(0x137));return _0x5c803f[_0x112887(0x196)];}catch(_0x2dc1b9){return console[_0x112887(0x1b8)]('Error\x20fetching\x20'+_0x21c410+':',_0x2dc1b9),this[_0x112887(0x1be)](_0x112887(0x14c)+_0x21c410+'.\x20Please\x20try\x20again\x20later.'),[];}}[_0x2ac43e(0x1be)](_0x203057){const _0x3d459f=_0x2ac43e,_0x550d87=document[_0x3d459f(0x159)](_0x3d459f(0x1c5));_0x550d87[_0x3d459f(0x198)]=_0x3d459f(0x1cd),_0x550d87['textContent']=_0x203057,document[_0x3d459f(0x136)]('.container')['prepend'](_0x550d87),setTimeout(()=>_0x550d87[_0x3d459f(0x1cc)](),0x1388);}async[_0x2ac43e(0x1c9)](){const _0x2535ee=_0x2ac43e;try{this[_0x2535ee(0x184)](!![]);const _0x20b276=await this[_0x2535ee(0x147)](_0x2535ee(0x1a4));this[_0x2535ee(0x1bc)]=_0x20b276[_0x2535ee(0x144)](0x1)['map'](([_0x132b79,_0x539eed,_0x23244c])=>({'id':_0x132b79,'name':_0x539eed,'whatsapp':_0x23244c})),this[_0x2535ee(0x19a)]();}catch(_0x32db90){document[_0x2535ee(0x133)]('vendorError')['style'][_0x2535ee(0x16e)]=_0x2535ee(0x152);}finally{this[_0x2535ee(0x184)](![]);}}async[_0x2ac43e(0x1b7)](){const _0x4ff479=_0x2ac43e,_0x556234=document[_0x4ff479(0x133)]('vendorSelect'),_0x18f2ac=_0x556234['value'];document[_0x4ff479(0x133)](_0x4ff479(0x183))[_0x4ff479(0x1ac)][_0x4ff479(0x16e)]=_0x18f2ac?'block':_0x4ff479(0x139);if(!_0x18f2ac){this[_0x4ff479(0x177)]=null,this[_0x4ff479(0x1a0)]=[],this[_0x4ff479(0x1ca)]=[],this[_0x4ff479(0x1b1)](),this[_0x4ff479(0x18b)](),this[_0x4ff479(0x1a5)]([]);return;}try{this[_0x4ff479(0x184)](!![]);const _0x3f1c50=await this['fetchData'](_0x4ff479(0x1b5));this[_0x4ff479(0x1a0)]=_0x3f1c50['slice'](0x1)[_0x4ff479(0x1a3)](_0x303c1d=>_0x303c1d[0x1][_0x4ff479(0x164)]()===_0x18f2ac[_0x4ff479(0x164)]())[_0x4ff479(0x1af)](([_0xfc14bf,_0x2753c2,_0x4a2593,_0xceebe8])=>({'id':_0xfc14bf,'name':_0x4a2593,'pharmaCompany':_0xceebe8})),this[_0x4ff479(0x150)]=this[_0x4ff479(0x1a0)][_0x4ff479(0x185)]((_0x2085b0,_0x3ed428)=>{const _0x178f19=_0x4ff479,{pharmaCompany:_0x462670}=_0x3ed428;return!_0x2085b0[_0x462670]&&(_0x2085b0[_0x462670]=[]),_0x2085b0[_0x462670][_0x178f19(0x180)](_0x3ed428),_0x2085b0;},{}),document[_0x4ff479(0x133)](_0x4ff479(0x18d))[_0x4ff479(0x1ac)][_0x4ff479(0x16e)]=this[_0x4ff479(0x1a0)][_0x4ff479(0x18f)]===0x0?'block':_0x4ff479(0x139),this['renderMedicines']();}catch(_0x4b7ee0){console[_0x4ff479(0x1b8)](_0x4ff479(0x1a7),_0x4b7ee0),this[_0x4ff479(0x1a5)]([]);}finally{this[_0x4ff479(0x184)](![]);}}[_0x2ac43e(0x19a)](){const _0x5bed0a=_0x2ac43e,_0x22e729=document['getElementById'](_0x5bed0a(0x146));_0x22e729['innerHTML']=_0x5bed0a(0x1b3)+this['vendors']['map'](_0x3a32b3=>_0x5bed0a(0x19b)+_0x3a32b3['id']+'\x22>'+_0x3a32b3[_0x5bed0a(0x1b4)]+_0x5bed0a(0x14f))[_0x5bed0a(0x175)]('');}[_0x2ac43e(0x1a5)](_0x55aa44=this[_0x2ac43e(0x150)]){const _0x7178a3=_0x2ac43e,_0x1892c3=document['getElementById'](_0x7178a3(0x178));if(Array[_0x7178a3(0x174)](_0x55aa44)){this['displayedMedicines']=_0x55aa44,_0x1892c3[_0x7178a3(0x18c)]=_0x55aa44['map'](_0x9a4af4=>_0x7178a3(0x17d)+_0x9a4af4[_0x7178a3(0x1b4)]+_0x7178a3(0x16c)+_0x9a4af4['id']+_0x7178a3(0x1d2)+_0x9a4af4['id']+_0x7178a3(0x13b))[_0x7178a3(0x175)]('');return;}this[_0x7178a3(0x16a)]=Object[_0x7178a3(0x196)](_0x55aa44)[_0x7178a3(0x172)](),_0x1892c3[_0x7178a3(0x18c)]=Object[_0x7178a3(0x1c1)](_0x55aa44)['map'](([_0x50e36b,_0x33bd81])=>'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20class=\x22company-row\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20colspan=\x223\x22\x20class=\x22pharma-company-header\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<strong>'+_0x50e36b+_0x7178a3(0x19e)+_0x33bd81['map'](_0x5ca33b=>_0x7178a3(0x17d)+_0x5ca33b[_0x7178a3(0x1b4)]+_0x7178a3(0x16c)+_0x5ca33b['id']+_0x7178a3(0x1d2)+_0x5ca33b['id']+_0x7178a3(0x13b))[_0x7178a3(0x175)]('')+_0x7178a3(0x14e))[_0x7178a3(0x175)]('');}[_0x2ac43e(0x141)](_0x298cf0){const _0x4c4753=_0x2ac43e,_0x446ad7=document[_0x4c4753(0x133)](_0x4c4753(0x1c2)+_0x298cf0),_0x107dac=parseInt(_0x446ad7?.['value'],0xa);if(!_0x107dac||_0x107dac<0x1){alert('Please\x20enter\x20a\x20valid\x20quantity');return;}const _0x3b2e78=this['displayedMedicines'][_0x4c4753(0x1b0)](_0x355f06=>_0x355f06['id']===_0x298cf0);if(!_0x3b2e78){alert(_0x4c4753(0x135));return;}const _0x5a4b0b=this[_0x4c4753(0x1ca)][_0x4c4753(0x1b0)](_0x170ef4=>_0x170ef4['id']===_0x298cf0);_0x5a4b0b?_0x5a4b0b[_0x4c4753(0x19f)]+=_0x107dac:this[_0x4c4753(0x1ca)]['push']({..._0x3b2e78,'quantity':_0x107dac}),_0x446ad7[_0x4c4753(0x134)]='',document['getElementById'](_0x4c4753(0x182))[_0x4c4753(0x134)]='',this['renderMedicines'](),this[_0x4c4753(0x1b1)](),this['updateActionButtons']();}[_0x2ac43e(0x191)](_0x3c518){const _0x52cfe6=_0x2ac43e,_0xabf86d=_0x3c518[_0x52cfe6(0x193)]();if(_0xabf86d){const _0x116237=this['filteredMedicines'][_0x52cfe6(0x1a3)](_0x5cbe03=>_0x5cbe03[_0x52cfe6(0x1b4)]['toLowerCase']()[_0x52cfe6(0x157)](_0xabf86d));this[_0x52cfe6(0x1a5)](this[_0x52cfe6(0x195)](_0x116237));}else this[_0x52cfe6(0x1a5)](this[_0x52cfe6(0x150)]);}[_0x2ac43e(0x195)](_0x56ea4d){const _0x5e9a8b=_0x2ac43e;return _0x56ea4d[_0x5e9a8b(0x185)]((_0x16d549,_0x78b11d)=>{const _0x410857=_0x5e9a8b,{pharmaCompany:_0x6c87d4}=_0x78b11d;return!_0x16d549[_0x6c87d4]&&(_0x16d549[_0x6c87d4]=[]),_0x16d549[_0x6c87d4][_0x410857(0x180)](_0x78b11d),_0x16d549;},{});}[_0x2ac43e(0x1b1)](){const _0x3da29a=_0x2ac43e,_0x36af06=document[_0x3da29a(0x133)](_0x3da29a(0x149));_0x36af06[_0x3da29a(0x18c)]=this['selectedMedicines']['map']((_0x23a969,_0xc9de28)=>_0x3da29a(0x160)+_0x23a969[_0x3da29a(0x1b4)]+_0x3da29a(0x1c6)+_0x23a969[_0x3da29a(0x19f)]+_0x3da29a(0x163)+_0xc9de28+')\x22>Remove</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20')[_0x3da29a(0x175)]('');}[_0x2ac43e(0x1aa)](_0x2e6d72){const _0x4e7a01=_0x2ac43e;this['selectedMedicines']['splice'](_0x2e6d72,0x1),this['renderSelectedMedicines'](),this[_0x4e7a01(0x18b)]();}[_0x2ac43e(0x161)](){const _0x2c2c24=_0x2ac43e;this[_0x2c2c24(0x1ca)]=[],this[_0x2c2c24(0x1b1)](),this[_0x2c2c24(0x18b)]();}['updateActionButtons'](){const _0x50389d=_0x2ac43e,_0x25e31b=this[_0x50389d(0x1ca)][_0x50389d(0x18f)]>0x0;[_0x50389d(0x15d),_0x50389d(0x176),'whatsappBtn',_0x50389d(0x1d4)][_0x50389d(0x13f)](_0x5acc62=>{const _0x45b82d=_0x50389d;document[_0x45b82d(0x133)](_0x5acc62)[_0x45b82d(0x19c)]=!_0x25e31b;});}[_0x2ac43e(0x184)](_0x3b29ad){const _0x47429a=_0x2ac43e;this[_0x47429a(0x1ba)]=_0x3b29ad,document[_0x47429a(0x18e)][_0x47429a(0x17f)][_0x47429a(0x154)](_0x47429a(0x151),_0x3b29ad);}[_0x2ac43e(0x17e)](_0x368728=![]){const _0x25b9f9=_0x2ac43e,_0x5ea141=new Date()[_0x25b9f9(0x1bd)](),_0x5bfc7e=_0x368728?_0x25b9f9(0x189)+_0x5ea141+'\x0a\x0a':'';return _0x5bfc7e+this[_0x25b9f9(0x1ca)][_0x25b9f9(0x1af)](_0x50d73e=>_0x50d73e[_0x25b9f9(0x1b4)]+':\x20'+_0x50d73e['quantity'])[_0x25b9f9(0x175)]('\x0a');}[_0x2ac43e(0x15f)](){const _0x4df16e=_0x2ac43e,_0x47d704=this['generateOrderSummary']();alert(_0x4df16e(0x169)+_0x47d704);}[_0x2ac43e(0x148)](){const _0x54b3a4=_0x2ac43e,_0x228fff=window[_0x54b3a4(0x13c)]('',_0x54b3a4(0x15c)),_0x1a9163=document[_0x54b3a4(0x133)](_0x54b3a4(0x146))[_0x54b3a4(0x140)][0x0][_0x54b3a4(0x13e)],_0x2b8c03=localStorage['getItem'](_0x54b3a4(0x1c4))||_0x54b3a4(0x142);_0x228fff[_0x54b3a4(0x162)]['write'](_0x54b3a4(0x16b)+_0x2b8c03+'</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Vendor:</strong>\x20'+_0x1a9163+_0x54b3a4(0x1ce)+new Date()[_0x54b3a4(0x1bd)]()+_0x54b3a4(0x17a)+this[_0x54b3a4(0x1ca)][_0x54b3a4(0x1af)](_0x3a234c=>'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x3a234c[_0x54b3a4(0x1b4)]+_0x54b3a4(0x15b)+_0x3a234c[_0x54b3a4(0x19f)]+_0x54b3a4(0x1c0))['join']('')+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</table>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</body>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</html>\x0a\x20\x20\x20\x20\x20\x20\x20\x20'),_0x228fff[_0x54b3a4(0x162)][_0x54b3a4(0x14a)](),_0x228fff['focus'](),setTimeout(()=>{_0x228fff['print'](),_0x228fff['close']();},0xfa);}[_0x2ac43e(0x14b)](){const _0x1365ad=_0x2ac43e,_0x50aa2e=document[_0x1365ad(0x133)](_0x1365ad(0x146)),_0x206a7a=this[_0x1365ad(0x1bc)][_0x1365ad(0x1b0)](_0x4060d3=>_0x4060d3['id']===_0x50aa2e['value']),_0x43ff6f=localStorage[_0x1365ad(0x1b2)]('businessName')||_0x1365ad(0x142);if(!_0x206a7a||!_0x206a7a[_0x1365ad(0x1c7)]){alert('No\x20WhatsApp\x20number\x20available\x20for\x20this\x20vendor.');return;}const _0x6d2e93=_0x206a7a['whatsapp'][_0x1365ad(0x1b9)](/[^\d]/g,'');if(_0x6d2e93['length']<0xa){alert(_0x1365ad(0x1a2));return;}const _0x44d2ff=encodeURIComponent(_0x43ff6f+_0x1365ad(0x190)+this[_0x1365ad(0x17e)](!![])),_0x42ff49='https://wa.me/'+_0x6d2e93+_0x1365ad(0x170)+_0x44d2ff;try{window[_0x1365ad(0x13c)](_0x42ff49,'_blank');}catch(_0x43de51){console['error'](_0x1365ad(0x1a1),_0x43de51),alert(_0x1365ad(0x187));}}[_0x2ac43e(0x1cf)](){const _0x4e8f6b=_0x2ac43e,{jsPDF:_0x3f78e9}=window[_0x4e8f6b(0x1c8)],_0x4fedf6=new _0x3f78e9(),_0x3d1080=new Date(),_0x208952=_0x3d1080[_0x4e8f6b(0x1bd)](_0x4e8f6b(0x165))['replace'](/\//g,'-'),_0x39c4af=document[_0x4e8f6b(0x133)](_0x4e8f6b(0x146))[_0x4e8f6b(0x140)][0x0][_0x4e8f6b(0x13e)],_0x2a7c0d=localStorage[_0x4e8f6b(0x1b2)](_0x4e8f6b(0x1c4))||_0x4e8f6b(0x142);_0x4fedf6[_0x4e8f6b(0x173)](0xa),_0x4fedf6[_0x4e8f6b(0x13e)]('Medicine\x20Order',0x14,0x14),_0x4fedf6['text'](_0x4e8f6b(0x15a)+_0x2a7c0d,0x14,0x19),_0x4fedf6[_0x4e8f6b(0x13e)]('Vendor:\x20'+_0x39c4af,0x14,0x1e),_0x4fedf6['text'](_0x4e8f6b(0x189)+_0x208952,0x14,0x23),_0x4fedf6['autoTable']({'head':[[_0x4e8f6b(0x1ad),_0x4e8f6b(0x1a9)]],'body':this[_0x4e8f6b(0x1ca)][_0x4e8f6b(0x1af)](_0x42892f=>[_0x42892f['name'],_0x42892f[_0x4e8f6b(0x19f)][_0x4e8f6b(0x164)]()]),'startY':0x28});const _0xc29f15='Medicine-Order-'+_0x208952+'-'+_0x39c4af[_0x4e8f6b(0x1b9)](/\s+/g,'_')+_0x4e8f6b(0x199);_0x4fedf6[_0x4e8f6b(0x1d1)](_0xc29f15);}}const medicineSystem=new MedicineOrderSystem();console[_0x2ac43e(0x179)](_0x2ac43e(0x1b6),medicineId),console[_0x2ac43e(0x179)](_0x2ac43e(0x16f),this[_0x2ac43e(0x16a)]),console[_0x2ac43e(0x179)]('Selected\x20medicines:',this[_0x2ac43e(0x1ca)]);function previewOrder(){medicineSystem['previewOrder']();}function printOrder(){const _0x3b51ce=_0x2ac43e;medicineSystem[_0x3b51ce(0x148)]();}function sendWhatsApp(){const _0x30040e=_0x2ac43e;medicineSystem[_0x30040e(0x14b)]();}function generatePDF(){const _0x368847=_0x2ac43e;medicineSystem[_0x368847(0x1cf)]();}
+document.addEventListener("DOMContentLoaded", () => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const username = localStorage.getItem("username");
+    const businessName = localStorage.getItem("businessName");
+
+    if (!isLoggedIn || !username || !businessName) {
+        alert("You must log in first!");
+        window.location.href = "index.html";
+        return;
+    }
+        // Display user information
+    document.getElementById("welcomeMessage").textContent = `Welcome, ${businessName}!`;
+});
+
+document.getElementById("logoutButton").addEventListener("click", () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
+    alert("You have been logged out.");
+    window.location.href = "index.html";
+});
+
+// Fix for scroll to selected medicines
+document.getElementById('scrollToSelected').addEventListener('click', () => {
+    const selectedSection = document.getElementById('selected-medicines-section');
+    if (selectedSection) {
+        selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        console.error('Selected Medicines section not found.');
+    }
+});
+
+
+const SHEET_ID = '1FQg-uoP3eJ3E5NhWAn3k_gJfF0TOm4yyp3955T7UlVY';
+const API_KEY = 'AIzaSyAoUbq6tei8kxKILLvXWQO9hT2DmVUK7xU';
+
+class MedicineOrderSystem {
+    constructor() {
+        this.vendors = [];
+        this.currentVendor = null;
+        this.filteredMedicines = [];
+        this.selectedMedicines = [];
+        this.isLoading = false;
+        this.init();
+    }
+
+    async init() {
+        this.setupEventListeners();
+        await this.loadVendors();
+    }
+
+    setupEventListeners() {
+        document.getElementById('vendorSelect').addEventListener('change', () => {
+            if (this.selectedMedicines.length > 0) {
+                const confirmChange = confirm(
+                    "Changing the vendor will clear the selected medicines. Do you want to continue?"
+                );
+                if (!confirmChange) {
+                    document.getElementById('vendorSelect').value = this.currentVendor?.id || "";
+                    return;
+                }
+            }
+            this.clearSelectedMedicines();
+            this.loadMedicines();
+        });
+        document.getElementById('medicineSearch').addEventListener('input', (e) =>
+            this.searchMedicines(e.target.value)
+        );
+    }
+    
+
+    async fetchData(endpoint) {
+        try {
+            const response = await fetch(
+                `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${endpoint}?key=${API_KEY}`
+            );
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            if (!data.values) {
+                throw new Error('No data received from the API');
+            }
+            return data.values;
+        } catch (error) {
+            console.error(`Error fetching ${endpoint}:`, error);
+            this.showError(`Failed to load ${endpoint}. Please try again later.`);
+            return [];
+        }
+    }
+
+    showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
+        document.querySelector('.container').prepend(errorDiv);
+        setTimeout(() => errorDiv.remove(), 5000);
+    }
+
+    async loadVendors() {
+        try {
+            this.setLoading(true);
+            const data = await this.fetchData('Vendors');
+            this.vendors = data.slice(1).map(([id, name, whatsapp]) => ({ id, name, whatsapp }));
+            this.populateVendorSelect();
+        } catch (error) {
+            document.getElementById('vendorError').style.display = 'block';
+        } finally {
+            this.setLoading(false);
+        }
+    }
+
+    async loadMedicines() {
+        const vendorSelect = document.getElementById('vendorSelect');
+        const vendorId = vendorSelect.value;
+    
+        // Show or hide the search container based on vendor selection
+        document.getElementById('searchContainer').style.display = vendorId ? 'block' : 'none';
+    
+        // Reset state if no vendor is selected
+        if (!vendorId) {
+            this.currentVendor = null;
+            this.filteredMedicines = [];
+            this.selectedMedicines = [];
+            this.renderSelectedMedicines();
+            this.updateActionButtons();
+            this.renderMedicines([]);
+            return;
+        }
+    
+        try {
+            this.setLoading(true);
+    
+            // Fetch data and filter based on selected vendor ID
+            const data = await this.fetchData('Medicines');
+            this.filteredMedicines = data.slice(1) // Skip the header row
+                .filter(row => row[1].toString() === vendorId.toString()) // Ensure IDs match as strings
+                .map(([id, vendorId, name, pharmaCompany]) => ({
+                    id,
+                    name,
+                    pharmaCompany
+                }));
+    
+            // Group medicines by pharma company
+            this.groupedMedicines = this.filteredMedicines.reduce((groups, medicine) => {
+                const { pharmaCompany } = medicine;
+                if (!groups[pharmaCompany]) {
+                    groups[pharmaCompany] = [];
+                }
+                groups[pharmaCompany].push(medicine);
+                return groups;
+            }, {});
+    
+            // Display an error if no medicines are available
+            document.getElementById('medicineError').style.display = 
+                this.filteredMedicines.length === 0 ? 'block' : 'none';
+    
+            // Render medicines grouped by pharma company
+            this.renderMedicines();
+        } catch (error) {
+            console.error('Error loading medicines:', error);
+            this.renderMedicines([]);
+        } finally {
+            this.setLoading(false);
+        }
+    }
+ 
+   
+    
+
+    populateVendorSelect() {
+        const select = document.getElementById('vendorSelect');
+        select.innerHTML = '<option value="">-- Select Vendor --</option>' +
+            this.vendors.map(vendor =>
+                `<option value="${vendor.id}">${vendor.name}</option>`
+            ).join('');
+    }
+
+    renderMedicines(medicines = this.groupedMedicines) {
+        const medicineTable = document.getElementById('medicineTable');
+    
+        // If a flat list is passed, render as is
+        if (Array.isArray(medicines)) {
+            this.displayedMedicines = medicines; // Update the displayed medicines
+            medicineTable.innerHTML = medicines.map(medicine => `
+                <tr class="medicine-row">
+                    <td>${medicine.name}</td>
+                    <td>
+                        <input type="number" min="1" id="qty-${medicine.id}" 
+                               class="quantity-input" placeholder="Quantity">
+                    </td>
+                    <td>
+                        <button onclick="medicineSystem.addMedicine('${medicine.id}')">Add</button>
+                    </td>
+                </tr>
+            `).join('');
+            return;
+        }
+    
+        // Grouped medicines rendering
+        this.displayedMedicines = Object.values(medicines).flat(); // Flatten grouped data
+        medicineTable.innerHTML = Object.entries(medicines).map(([company, medicines]) => `
+            <tr class="company-row">
+                <td colspan="3" class="pharma-company-header">
+                    <strong>${company}</strong>
+                </td>
+            </tr>
+            ${medicines.map(medicine => `
+                <tr class="medicine-row">
+                    <td>${medicine.name}</td>
+                    <td>
+                        <input type="number" min="1" id="qty-${medicine.id}" 
+                               class="quantity-input" placeholder="Quantity">
+                    </td>
+                    <td>
+                        <button onclick="medicineSystem.addMedicine('${medicine.id}')">Add</button>
+                    </td>
+                </tr>
+            `).join('')}
+        `).join('');
+    }
+    
+    
+    
+    addMedicine(medicineId) {
+        const qtyInput = document.getElementById(`qty-${medicineId}`);
+        const quantity = parseInt(qtyInput?.value, 10);
+    
+        if (!quantity || quantity < 1) {
+            alert('Please enter a valid quantity');
+            return;
+        }
+    
+        const medicine = this.displayedMedicines.find(med => med.id === medicineId);
+        if (!medicine) {
+            alert('Medicine not found');
+            return;
+        }
+    
+        const existing = this.selectedMedicines.find(item => item.id === medicineId);
+        if (existing) {
+            existing.quantity += quantity;
+        } else {
+            this.selectedMedicines.push({ ...medicine, quantity });
+        }
+    
+        // Clear input, search box, and re-render medicines
+        qtyInput.value = '';
+        document.getElementById('medicineSearch').value = ''; // Clear the search box
+        this.renderMedicines(); // Display the full list of medicines
+        this.renderSelectedMedicines();
+        this.updateActionButtons();
+    }
+    
+    searchMedicines(query) {
+        const searchTerm = query.toLowerCase();
+        if (searchTerm) {
+            const filtered = this.filteredMedicines.filter(medicine =>
+                medicine.name.toLowerCase().includes(searchTerm)
+            );
+            this.renderMedicines(this.groupMedicinesByPharmaCompany(filtered));
+        } else {
+            this.renderMedicines(this.groupedMedicines); // Show the full list if no query
+        }
+    }
+    
+    groupMedicinesByPharmaCompany(medicines) {
+        return medicines.reduce((groups, medicine) => {
+            const { pharmaCompany } = medicine;
+            if (!groups[pharmaCompany]) {
+                groups[pharmaCompany] = [];
+            }
+            groups[pharmaCompany].push(medicine);
+            return groups;
+        }, {});
+    }
+    
+    
+    
+
+    renderSelectedMedicines() {
+        const selectedTable = document.getElementById('selectedMedicinesTable');
+        selectedTable.innerHTML = this.selectedMedicines.map((medicine, index) => `
+            <tr>
+                <td>${medicine.name}</td>
+                <td>${medicine.quantity}</td>
+                <td>
+                    <button onclick="medicineSystem.removeMedicine(${index})">Remove</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    removeMedicine(index) {
+        this.selectedMedicines.splice(index, 1);
+        this.renderSelectedMedicines();
+        this.updateActionButtons();
+    }
+
+    clearSelectedMedicines() {
+        this.selectedMedicines = [];
+        this.renderSelectedMedicines();
+        this.updateActionButtons();
+    }
+
+    updateActionButtons() {
+        const hasSelectedMedicines = this.selectedMedicines.length > 0;
+        ['previewBtn', 'printBtn', 'whatsappBtn', 'pdfBtn'].forEach(btnId => {
+            document.getElementById(btnId).disabled = !hasSelectedMedicines;
+        });
+    }
+
+    setLoading(loading) {
+        this.isLoading = loading;
+        document.body.classList.toggle('loading', loading);
+    }
+
+    generateOrderSummary(includeDate = false) {
+        const date = new Date().toLocaleDateString();
+        const headerLine = includeDate ? `Order Date: ${date}\n\n` : '';
+        return headerLine + this.selectedMedicines.map(medicine =>
+            `${medicine.name}: ${medicine.quantity}`
+        ).join('\n');
+    }
+
+    previewOrder() {
+        const summary = this.generateOrderSummary();
+        alert('Order Preview:\n\n' + summary);
+    }
+
+    printOrder() {
+        const printWindow = window.open('', '_blank');
+        const vendorName = document.getElementById('vendorSelect').selectedOptions[0].text;
+        const ownerName = localStorage.getItem("businessName") || "Unknown Owner";
+    
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Medicine Order</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    h2 { margin-bottom: 10px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                    th { background: #f4f4f4; }
+                    @media print {
+                        @page { margin: 0.5cm; }
+                    }
+                    @media screen and (max-width: 480px) {
+                        body { padding: 10px; }
+                        th, td { padding: 6px; font-size: 14px; }
+                    }
+                </style>
+            </head>
+            <body>
+                <h2>Medicine Order Summary</h2>
+                <p><strong>From:</strong> ${ownerName}</p>
+                <p><strong>Vendor:</strong> ${vendorName}</p>
+                <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${this.selectedMedicines.map(medicine => `
+                            <tr>
+                                <td>${medicine.name}</td>
+                                <td>${medicine.quantity}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </body>
+            </html>
+        `);
+        
+        printWindow.document.close();
+        printWindow.focus();
+        
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 250);
+    }
+    
+
+    sendWhatsApp() {
+        const vendorSelect = document.getElementById('vendorSelect');
+        const selectedVendor = this.vendors.find(v => v.id === vendorSelect.value);
+        const ownerName = localStorage.getItem("businessName") || "Unknown Owner";
+    
+        if (!selectedVendor || !selectedVendor.whatsapp) {
+            alert('No WhatsApp number available for this vendor.');
+            return;
+        }
+    
+        const whatsappNumber = selectedVendor.whatsapp.replace(/[^\d]/g, '');
+        if (whatsappNumber.length < 10) {
+            alert('Invalid WhatsApp number.');
+            return;
+        }
+    
+        const message = encodeURIComponent(
+            `${ownerName} has placed a new medicine order:\n${this.generateOrderSummary(true)}`
+        );
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+    
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            console.error('Error opening WhatsApp:', error);
+            alert('Failed to open WhatsApp. Please try again.');
+        }
+    }
+    
+    
+
+    generatePDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const currentDate = new Date();
+        const orderDate = currentDate.toLocaleDateString("en-GB").replace(/\//g, '-'); // Format as DD-MM-YYYY
+        const vendorName = document.getElementById('vendorSelect').selectedOptions[0].text;
+        const ownerName = localStorage.getItem("businessName") || "Unknown Owner";
+    
+        // Set smaller font size
+        doc.setFontSize(10);
+    
+        // Adjust line spacing by reducing the Y-coordinate increment
+        doc.text('Medicine Order', 20, 20);
+        doc.text(`From: ${ownerName}`, 20, 25); // Adjusted Y-coordinate
+        doc.text(`Vendor: ${vendorName}`, 20, 30); // Adjusted Y-coordinate
+        doc.text(`Order Date: ${orderDate}`, 20, 35); // Adjusted Y-coordinate
+    
+        // Add table starting at an adjusted position
+        doc.autoTable({
+            head: [['Medicine', 'Quantity']],
+            body: this.selectedMedicines.map(medicine => [
+                medicine.name,
+                medicine.quantity.toString()
+            ]),
+            startY: 40 // Start below the last line of text
+        });
+    
+        const fileName = `Medicine-Order-${orderDate}-${vendorName.replace(/\s+/g, '_')}.pdf`;
+        doc.save(fileName);
+    }
+    
+    
+    
+}
+
+const medicineSystem = new MedicineOrderSystem();
+
+
+console.log('Adding medicine:', medicineId);
+console.log('Displayed medicines:', this.displayedMedicines);
+console.log('Selected medicines:', this.selectedMedicines);
+
+
+function previewOrder() { medicineSystem.previewOrder(); }
+function printOrder() { medicineSystem.printOrder(); }
+function sendWhatsApp() { medicineSystem.sendWhatsApp(); }
+function generatePDF() { medicineSystem.generatePDF(); }

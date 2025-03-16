@@ -1,1 +1,40 @@
-function _0x5aa9(_0x2c93c0,_0x23901f){const _0x4f2168=_0x4f21();return _0x5aa9=function(_0x5aa9b0,_0x508766){_0x5aa9b0=_0x5aa9b0-0x64;let _0x2bde58=_0x4f2168[_0x5aa9b0];return _0x2bde58;},_0x5aa9(_0x2c93c0,_0x23901f);}const _0x18b227=_0x5aa9;(function(_0x42352a,_0x28b9de){const _0x597a06=_0x5aa9,_0x433d1e=_0x42352a();while(!![]){try{const _0x486025=-parseInt(_0x597a06(0x64))/0x1*(-parseInt(_0x597a06(0x75))/0x2)+parseInt(_0x597a06(0x72))/0x3*(-parseInt(_0x597a06(0x77))/0x4)+-parseInt(_0x597a06(0x7c))/0x5*(parseInt(_0x597a06(0x85))/0x6)+parseInt(_0x597a06(0x83))/0x7*(-parseInt(_0x597a06(0x7e))/0x8)+-parseInt(_0x597a06(0x74))/0x9+-parseInt(_0x597a06(0x73))/0xa+-parseInt(_0x597a06(0x71))/0xb*(-parseInt(_0x597a06(0x79))/0xc);if(_0x486025===_0x28b9de)break;else _0x433d1e['push'](_0x433d1e['shift']());}catch(_0x52dff6){_0x433d1e['push'](_0x433d1e['shift']());}}}(_0x4f21,0x238e9));function _0x4f21(){const _0x44a382=['password','getElementById','2003617dNVdjC','dashboard.html','49776OsVXyd','43pHeNQH','Error\x20fetching\x20users:','location','textContent','isLoggedIn','loginForm','style','href','addEventListener','trim','block','submit','reduce','1870jbFqNG','18zBndQl','2102000dWrzhA','1869318TFvSue','5600tivbca','preventDefault','96284ByMVbT','json','64608mkTjzs','true','setItem','25wOAXFg','Invalid\x20login\x20credentials','8OkpnCH','businessName','username'];_0x4f21=function(){return _0x44a382;};return _0x4f21();}const SHEET_URL='https://script.google.com/macros/s/AKfycbw-JALq2VRD2jhUgizTa-Rk5NK1r7iIcQTnY7SzxEG8OB_s6BuGdfONeKDkD5QlNfZi/exec';async function fetchUsers(){const _0x469b92=_0x5aa9;try{const _0x141c7c=await fetch(SHEET_URL),_0x5d9eba=await _0x141c7c[_0x469b92(0x78)]();return _0x5d9eba[_0x469b92(0x70)]((_0x55e1a6,[_0x583409,_0x2aff8b,_0x2d695e])=>{return _0x583409&&_0x2aff8b&&_0x2d695e&&(_0x55e1a6[_0x583409]={'password':_0x2aff8b,'businessName':_0x2d695e}),_0x55e1a6;},{});}catch(_0x1ace57){return console['error'](_0x469b92(0x65),_0x1ace57),{};}}document[_0x18b227(0x82)](_0x18b227(0x69))[_0x18b227(0x6c)](_0x18b227(0x6f),async _0xafdd2a=>{const _0x40295c=_0x18b227;_0xafdd2a[_0x40295c(0x76)]();const _0x443c70=document[_0x40295c(0x82)](_0x40295c(0x80))['value'][_0x40295c(0x6d)](),_0x54d31d=document[_0x40295c(0x82)](_0x40295c(0x81))['value'][_0x40295c(0x6d)](),_0x5c19f5=await fetchUsers();if(_0x5c19f5[_0x443c70]&&_0x5c19f5[_0x443c70]['password']===_0x54d31d)localStorage[_0x40295c(0x7b)](_0x40295c(0x68),_0x40295c(0x7a)),localStorage[_0x40295c(0x7b)]('username',_0x443c70),localStorage[_0x40295c(0x7b)](_0x40295c(0x7f),_0x5c19f5[_0x443c70][_0x40295c(0x7f)]),window[_0x40295c(0x66)][_0x40295c(0x6b)]=_0x40295c(0x84);else{const _0x211e5a=document[_0x40295c(0x82)]('alertMessage');_0x211e5a[_0x40295c(0x6a)]['display']=_0x40295c(0x6e),_0x211e5a[_0x40295c(0x67)]=_0x40295c(0x7d);}});
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbw-JALq2VRD2jhUgizTa-Rk5NK1r7iIcQTnY7SzxEG8OB_s6BuGdfONeKDkD5QlNfZi/exec"; // Replace with your Web App URL
+
+async function fetchUsers() {
+    try {
+        const response = await fetch(SHEET_URL);
+        const data = await response.json();
+        // Convert to key-value pairs
+        return data.reduce((users, [username, password, businessName]) => {
+            if (username && password && businessName) {
+                users[username] = { password, businessName };
+            }
+            return users;
+        }, {});
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        return {};
+    }
+}
+
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    const users = await fetchUsers();
+
+    if (users[username] && users[username].password === password) {
+        // Store login information in localStorage
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("username", username);
+        localStorage.setItem("businessName", users[username].businessName); // Store BusinessName
+        window.location.href = "dashboard.html"; // Redirect to dashboard
+    } else {
+        const alertMessage = document.getElementById("alertMessage");
+        alertMessage.style.display = "block";
+        alertMessage.textContent = "Invalid login credentials";
+    }
+});
+

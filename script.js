@@ -1,1 +1,74 @@
-const _0x227d5a=_0x63e2;(function(_0x482f55,_0x4d1da0){const _0x590e17=_0x63e2,_0x1a9f5c=_0x482f55();while(!![]){try{const _0x44782e=-parseInt(_0x590e17(0xef))/0x1+-parseInt(_0x590e17(0xf6))/0x2*(parseInt(_0x590e17(0xff))/0x3)+parseInt(_0x590e17(0xfd))/0x4*(parseInt(_0x590e17(0x111))/0x5)+parseInt(_0x590e17(0xed))/0x6*(parseInt(_0x590e17(0x118))/0x7)+parseInt(_0x590e17(0xf5))/0x8+parseInt(_0x590e17(0xe5))/0x9*(-parseInt(_0x590e17(0xeb))/0xa)+-parseInt(_0x590e17(0x114))/0xb;if(_0x44782e===_0x4d1da0)break;else _0x1a9f5c['push'](_0x1a9f5c['shift']());}catch(_0x2f71f7){_0x1a9f5c['push'](_0x1a9f5c['shift']());}}}(_0x40d3,0x91f3c));const SHEET_ID=_0x227d5a(0xf8),API_KEY=_0x227d5a(0x10c),SCRIPT_URL=_0x227d5a(0xfb);async function loadVendors(){const _0x561e5a=_0x227d5a;try{const _0x98707f=await fetchSheetData(_0x561e5a(0xf1)),_0x5b57af=_0x98707f[_0x561e5a(0xf9)](0x1)[_0x561e5a(0xe8)](([_0x4e3d7c,_0x10d23b,_0x166986])=>({'id':_0x4e3d7c,'name':_0x10d23b,'whatsapp':_0x166986})),_0x544430=document[_0x561e5a(0x116)](_0x561e5a(0x10b));_0x544430[_0x561e5a(0xf0)]=_0x5b57af[_0x561e5a(0xe8)](_0x4c56c6=>_0x561e5a(0xe4)+_0x4c56c6[_0x561e5a(0x106)]+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+(_0x4c56c6[_0x561e5a(0x113)]||'-')+_0x561e5a(0x104)+_0x4c56c6['id']+_0x561e5a(0x10a)+_0x4c56c6[_0x561e5a(0x106)]+'\x27,\x20\x27'+(_0x4c56c6['whatsapp']||'')+_0x561e5a(0xec)+_0x4c56c6['id']+_0x561e5a(0xf3))[_0x561e5a(0xfe)]('');const _0x6f6ee=document[_0x561e5a(0xea)](_0x561e5a(0xfa));_0x6f6ee[_0x561e5a(0xf0)]=_0x561e5a(0x108)+_0x5b57af[_0x561e5a(0xe8)](_0x126403=>'<option\x20value=\x22'+_0x126403['id']+'\x22>'+_0x126403[_0x561e5a(0x106)]+_0x561e5a(0x10f))[_0x561e5a(0xfe)]('');}catch(_0x12557d){showAlert(_0x561e5a(0xf4),'error');}}async function loadMedicines(){const _0x2902da=_0x227d5a;try{const _0x11f33e=await fetchSheetData(_0x2902da(0x117)),_0x40ae54=_0x11f33e[_0x2902da(0xf9)](0x1)[_0x2902da(0xe8)](([_0x55590f,_0x5422f9,_0x42b554])=>({'id':_0x55590f,'vendorId':_0x5422f9,'name':_0x42b554})),_0x5a09b1=await loadVendors(),_0x27b978=document[_0x2902da(0x116)](_0x2902da(0xf2));_0x27b978[_0x2902da(0xf0)]=_0x40ae54[_0x2902da(0xe8)](_0x5d9f07=>{const _0x229a5b=_0x2902da,_0x1cc47e=_0x5a09b1[_0x229a5b(0x109)](_0x677a6d=>_0x677a6d['id']===_0x5d9f07[_0x229a5b(0xe6)]);return _0x229a5b(0x102)+_0x5d9f07[_0x229a5b(0x106)]+_0x229a5b(0x11a)+(_0x1cc47e?_0x1cc47e[_0x229a5b(0x106)]:'Unknown')+'</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22editMedicine(\x27'+_0x5d9f07['id']+_0x229a5b(0x10a)+_0x5d9f07[_0x229a5b(0x106)]+_0x229a5b(0x10a)+_0x5d9f07['vendorId']+_0x229a5b(0x101)+_0x5d9f07['id']+_0x229a5b(0xee);})[_0x2902da(0xfe)]('');}catch(_0x371b1f){showAlert(_0x2902da(0x10e),'error');}}async function fetchSheetData(_0x185909){const _0x5254dd=_0x227d5a,_0xfc9da3=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+SHEET_ID+_0x5254dd(0x100)+_0x185909+_0x5254dd(0xe9)+API_KEY),_0x3fde96=await _0xfc9da3[_0x5254dd(0x119)]();return _0x3fde96[_0x5254dd(0x110)]||[];}function _0x40d3(){const _0x59c467=['textContent','whatsapp','928785DKBXBN','alert\x20alert-','querySelector','Medicines!A1:C','7hJeCWd','json','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','4219443raaFby','vendorId','addEventListener','map','?key=','getElementById','10hADVFF','\x27)\x22>Edit</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22delete\x22\x20onclick=\x22deleteVendor(\x27','4819908zycpcX','\x27)\x22>Delete</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','69224uiDJqO','innerHTML','Vendors!A1:C','#medicineTable\x20tbody','\x27)\x22>Delete</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','Failed\x20to\x20load\x20vendors','5191624PsWEYf','366EGOdmr','div','1FQg-uoP3eJ3E5NhWAn3k_gJfF0TOm4yyp3955T7UlVY','slice','medicineVendor','https://script.google.com/macros/s/AKfycbzwkwgYdRwfdK1uAW4x70i9h01sV5InJoi_LOuqFzO6XesPOAwePh-VmOBQNadaK5My/exec','className','4Mrmvmw','join','18246fdwzRN','/values/','\x27)\x22>Edit</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22delete\x22\x20onclick=\x22deleteMedicine(\x27','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','body','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22editVendor(\x27','createElement','name','insertBefore','<option\x20value=\x22\x22>Select\x20Vendor</option>','find','\x27,\x20\x27','#vendorTable\x20tbody','AIzaSyAoUbq6tei8kxKILLvXWQO9hT2DmVUK7xU','remove','Failed\x20to\x20load\x20medicines','</option>','values','4405205TcJcLu'];_0x40d3=function(){return _0x59c467;};return _0x40d3();}function showAlert(_0xea1d65,_0x533ff6){const _0x2dde37=_0x227d5a,_0x151d00=document[_0x2dde37(0x105)](_0x2dde37(0xf7));_0x151d00[_0x2dde37(0xfc)]=_0x2dde37(0x115)+_0x533ff6,_0x151d00[_0x2dde37(0x112)]=_0xea1d65,document[_0x2dde37(0x103)][_0x2dde37(0x107)](_0x151d00,document[_0x2dde37(0x103)]['firstChild']),setTimeout(()=>_0x151d00[_0x2dde37(0x10d)](),0xbb8);}function _0x63e2(_0x50bcd9,_0x1146a6){const _0x40d334=_0x40d3();return _0x63e2=function(_0x63e22c,_0x38d772){_0x63e22c=_0x63e22c-0xe4;let _0x1134dc=_0x40d334[_0x63e22c];return _0x1134dc;},_0x63e2(_0x50bcd9,_0x1146a6);}document[_0x227d5a(0xe7)]('DOMContentLoaded',()=>{loadVendors(),loadMedicines();});
+const SHEET_ID = '1FQg-uoP3eJ3E5NhWAn3k_gJfF0TOm4yyp3955T7UlVY';
+const API_KEY = 'AIzaSyAoUbq6tei8kxKILLvXWQO9hT2DmVUK7xU';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwkwgYdRwfdK1uAW4x70i9h01sV5InJoi_LOuqFzO6XesPOAwePh-VmOBQNadaK5My/exec';
+
+async function loadVendors() {
+    try {
+        const data = await fetchSheetData('Vendors!A1:C');
+        const vendors = data.slice(1).map(([id, name, whatsapp]) => ({ id, name, whatsapp }));
+
+        const tbody = document.querySelector('#vendorTable tbody');
+        tbody.innerHTML = vendors.map(vendor => `
+            <tr>
+                <td>${vendor.name}</td>
+                <td>${vendor.whatsapp || '-'}</td>
+                <td>
+                    <button onclick="editVendor('${vendor.id}', '${vendor.name}', '${vendor.whatsapp || ''}')">Edit</button>
+                    <button class="delete" onclick="deleteVendor('${vendor.id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+
+        const select = document.getElementById('medicineVendor');
+        select.innerHTML = '<option value="">Select Vendor</option>' + 
+            vendors.map(vendor => `<option value="${vendor.id}">${vendor.name}</option>`).join('');
+    } catch (error) {
+        showAlert('Failed to load vendors', 'error');
+    }
+}
+
+async function loadMedicines() {
+    try {
+        const data = await fetchSheetData('Medicines!A1:C');
+        const medicines = data.slice(1).map(([id, vendorId, name]) => ({ id, vendorId, name }));
+
+        const vendors = await loadVendors();
+        const tbody = document.querySelector('#medicineTable tbody');
+        tbody.innerHTML = medicines.map(medicine => {
+            const vendor = vendors.find(v => v.id === medicine.vendorId);
+            return `
+                <tr>
+                    <td>${medicine.name}</td>
+                    <td>${vendor ? vendor.name : 'Unknown'}</td>
+                    <td>
+                        <button onclick="editMedicine('${medicine.id}', '${medicine.name}', '${medicine.vendorId}')">Edit</button>
+                        <button class="delete" onclick="deleteMedicine('${medicine.id}')">Delete</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    } catch (error) {
+        showAlert('Failed to load medicines', 'error');
+    }
+}
+
+async function fetchSheetData(range) {
+    const response = await fetch(
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`
+    );
+    const data = await response.json();
+    return data.values || [];
+}
+
+function showAlert(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type}`;
+    alertDiv.textContent = message;
+    document.body.insertBefore(alertDiv, document.body.firstChild);
+    setTimeout(() => alertDiv.remove(), 3000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadVendors();
+    loadMedicines();
+});
